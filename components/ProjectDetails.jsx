@@ -35,7 +35,7 @@ const ProjectDetails = () => {
                 <Text color='white' mb={2} fontSize={'6xl'}><b>About us...</b></Text>
                     <Text mb='10' maxW={'80%'} color='white' align='center'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
             <Box bgColor={"#FF0080"} px='6' py='2' borderRadius='40' maxW={'400'}>
-                       <Center><HStack><Text color='white'>Follow us on Social Media:</Text>
+                       <Center><HStack><Text color='white'>Follow us:</Text>
                             <a href='#' target='_blank'><Image src={Twitter.src} alt='Twitter' w={5} /></a>
                             <a href='#' target='_blank'><Image src={Discord.src} alt='Discord' w={5} /></a>
                             <a href='#' target='_blank'><Image src={Website.src} alt='Website' w={5} /></a>
