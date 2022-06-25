@@ -45,7 +45,9 @@ export default function Hero() {
           <Heading
             fontWeight={600}
             fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
-            lineHeight={'110%'} color='white'>
+            lineHeight={'110%'} color='white'
+            textShadow='#FF0080 0px 2px 15px'
+            textColor={'white'}>
             Welcome to SimpleStaking!
           </Heading>
           <Text color={'white'}>
