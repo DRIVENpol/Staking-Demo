@@ -40,14 +40,12 @@ export default function Hero() {
           as={Box}
           textAlign={'center'}
           spacing={{ base: 8, md: 14 }}
-          py={{ base: 20, md: 36 }} >
+          py={{ base: 20, md: 36 }}>
 
           <Heading
             fontWeight={600}
             fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
-            lineHeight={'110%'} color='white'
-            textShadow='#FF0080 0px 2px 15px'
-            textColor={'white'}>
+            lineHeight={'110%'} color='white'>
             Welcome to SimpleStaking!
           </Heading>
           <Text color={'white'}>

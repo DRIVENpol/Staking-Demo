@@ -32,7 +32,7 @@ const ProjectDetails = () => {
                <Center>
                 <VStack gap='5'>
                 <Box maxW={['100%', '100%', '70%', '70%', '70%']} align='center' bgColor={'#141E30'} p='10' borderRadius={20}>
-                <Text color='white' mb={2} fontSize={'6xl'} textShadow='#FF0080 0px 2px 15px'><b>About us...</b></Text>
+                <Text color='white' mb={2} fontSize={'6xl'}><b>About us...</b></Text>
                     <Text mb='10' maxW={'80%'} color='white' align='center'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
             <Box bgColor={"#FF0080"} px='6' py='2' borderRadius='40' maxW={'400'}>
                        <Center><HStack><Text color='white'>Follow us on Social Media:</Text>
