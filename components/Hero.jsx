@@ -54,7 +54,7 @@ export default function Hero() {
            <br/>
         </Text>
           <Stack
-            direction={'column'}
+            direction={'row'}
             spacing={3}
             align={'center'}
             alignSelf={'center'}
@@ -68,8 +68,21 @@ export default function Hero() {
               fontSize={['12px', null, null, null, '100%']}
               _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
               px={6} borderRadius={40}>
-             Get Started!
+             <b>Stake $DVX</b>
             </Button>
+
+            <Button
+              variant={'solid'}
+              size='lg'
+              bgGradient='linear(to-l, #7928CA, #FF0080)'
+              color='white'
+              maxW={'100%'}
+              fontSize={['12px', null, null, null, '100%']}
+              _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
+              px={6} borderRadius={40}>
+             <b>Farm $DVX</b>
+            </Button>
+
             <Box>
             </Box>
           </Stack>
