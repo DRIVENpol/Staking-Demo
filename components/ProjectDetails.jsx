@@ -10,7 +10,7 @@ import Website from '../assets/icons/click.png'
 const ProjectDetails = () => {
   return (
     <>
-            <SimpleGrid columns={['1', '1', '1', '2', '2']} spacing={10} color='white' mb='100'>
+            <SimpleGrid columns={['1', '1', '1', '2', '2']} spacing={10} color='white' mb={['50', '50', '70', '80', '100']}>
                 <Box py={5}>
                 <br /><Text align={['center', 'center', 'center', 'right', 'right']} fontSize='3xl' mr={[null, null, null, null, '20']}><b>Welcome to Staking Demo!</b></Text>
                     <Text align={['center', 'center', 'center', 'right', 'right']} mr={[null, null, null, null, '20']}>The best place to get a staking dapp for your project!</Text></Box>
