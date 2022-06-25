@@ -21,6 +21,7 @@ const ProjectDetails = () => {
                     borderRadius='20' 
                     borderColor={'#FF0080'} 
                     boxShadow='#FF0080 0px 2px 15px'
+                    mb={10}
                     >
                     <VStack my={7}>
                         <Text color="#FF0080" mb='-6' fontSize={'2xl'}><b>APY Rate:</b></Text>
