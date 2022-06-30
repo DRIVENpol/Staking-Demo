@@ -34,8 +34,8 @@ const LatestNews = () => {
                     bgImage={'https://lh3.googleusercontent.com/G5V8Tny1jONBKHZfsAEiOVUYaKMUMgQuo-VwfHBa8_AAgsmAuWdz7lPq6UUmK5dCfilaaNBIOe5l1UoqiHAOyDoD5lAKZpxZtmtOZQ=h600'}
                     bgPosition='center'
                     >
-                     <Box bg='#FF0080' w='100%' h='55px' borderTopRadius={17} p={4} color='white'>
-                        <Text as={'b'} noOfLines='1'> [BREAKING NEWS]: Breaking News Title</Text>
+                     <Box bg='#FF0080' w='100%' h='55px' borderTopRadius={17} p={4} color='white' >
+                        <Text as={'b'} noOfLines='1' fontSize={['14px', null, null, null, '15px']}> [BREAKING NEWS]: Breaking News Title</Text>
                       </Box>
                     </Box>
             </GridItem>
