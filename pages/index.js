@@ -3,8 +3,6 @@ import {
   Container, Text
 } from '@chakra-ui/react';
 import ProjectDetails from "../components/ProjectDetails";
-import Staking from "../components/Staking";
-import Farming from "../components/Farming";
 import LatestNews from "../components/LatestNews";
 
 export default function Home() {
@@ -12,8 +10,8 @@ export default function Home() {
     <>
       <ProjectDetails />
       <LatestNews />
-      <Staking />
-      <Farming />
+      {/* <Staking />
+      <Farming /> */}
     </>
   )
 }
