@@ -17,11 +17,12 @@ const LatestNews = () => {
   return (
     <>
       <VStack pb='20'>
-        <Text color='white' fontSize={'6xl'} mt='40' mb='10'>
+        <Text color='white' fontSize={'6xl'} mt='20' mb='10' align={'center'}>
           <b>Latest news!</b>
           </Text>
-          <Grid templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(2, 1fr)', ]} gap={6} width={'75%'}>
-            <GridItem w='100%'>
+          <Grid templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(2, 1fr)', ]} gap={6} 
+          width={['100%', '100%', '90%', '80%', '75%']}>
+            <GridItem>
             
             <Box color={'#1b1545'}
                     width={'100%'} 
