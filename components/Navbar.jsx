@@ -227,11 +227,11 @@ const Navbar = () => {
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
               
-              <Link href="/"><Button _hover={{background: "#243B55", color: "white"}} bgColor='transparent'>
+              <Link href="/Staking"><Button _hover={{background: "#243B55", color: "white"}} bgColor='transparent'>
               Stake $DVX
                         </Button></Link>
 
-                        <Link href="/"><Button _hover={{background: "#243B55", color: "white"}} bgColor='transparent'>
+                        <Link href="/Farming"><Button _hover={{background: "#243B55", color: "white"}} bgColor='transparent'>
                         Farm $DVX
                         </Button></Link>
             </HStack>
@@ -268,8 +268,8 @@ const Navbar = () => {
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
             <Button colorScheme='blackAlpha'><Link href="/">Home</Link></Button>
-            <Button colorScheme='blackAlpha'><Link href="/Collections">Stake $DVX</Link></Button>
-            <Button colorScheme='blackAlpha'><Link href="/Collections">Farm $DVX</Link></Button>
+            <Button colorScheme='blackAlpha'><Link href="/Staking">Stake $DVX</Link></Button>
+            <Button colorScheme='blackAlpha'><Link href="/Farming">Farm $DVX</Link></Button>
             
             {account ? (<Button onClick={disconnect} width={'100%'} bgGradient='linear(to-l, #7928CA, #FF0080)' color={'white'} _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}>
            Disconnect
