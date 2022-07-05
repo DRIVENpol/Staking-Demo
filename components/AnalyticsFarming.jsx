@@ -1,8 +1,9 @@
 import React from 'react'
 
 import { Text, Grid, GridItem, Box, VStack } from '@chakra-ui/react';
-  
-  import Background from '../assets/bg-tabs.png';
+import { motion, useAnimation } from 'framer-motion';
+
+import Background from '../assets/bg-tabs.png';
 
 
 const AnalyticsFarming = () => {
@@ -13,6 +14,10 @@ const AnalyticsFarming = () => {
     >
 
       <GridItem align={'center'}>
+      <motion.div whileHover={{
+    scale: 1.05,
+    transition: { duration: .3 },
+  }}>
       <Box color={'#1b1545'} width='80%'    
                     height={'150'}
                     bgColor='#10044c'
@@ -24,11 +29,15 @@ const AnalyticsFarming = () => {
                         <Text color="#FF0080" mb='-2.5' fontSize={'1xl'}><b>APY Rate:</b></Text>
                         <Text color='white' fontSize={'4xl'}><b>34%</b></Text>
                         </VStack>
-                    </Box>
+                    </Box></motion.div>
       </GridItem>
 
 
       <GridItem align='center'>
+      <motion.div whileHover={{
+    scale: 1.05,
+    transition: { duration: .3 },
+  }}>
       <Box color={'#1b1545'} width='80%'
                     height={'150'} 
                     border='1px' 
@@ -39,9 +48,14 @@ const AnalyticsFarming = () => {
                         <Text color='white' fontSize={'4xl'}><b>$123,456</b></Text>
                         </VStack>
                     </Box>
+                    </motion.div>
       </GridItem>
 
       <GridItem align='center'>
+      <motion.div whileHover={{
+    scale: 1.05,
+    transition: { duration: .3 },
+  }}>
       <Box color={'#1b1545'} width='80%'    
                     height={'150'}
                     border='1px' 
@@ -53,10 +67,15 @@ const AnalyticsFarming = () => {
                         <Text color='white' fontSize={'4xl'}><b>1,256</b></Text>
                         </VStack>
                     </Box>
+                    </motion.div>
       </GridItem>
 
 
       <GridItem align='center'>
+      <motion.div whileHover={{
+    scale: 1.05,
+    transition: { duration: .3 },
+  }}>
       <Box color={'#1b1545'} width='80%'    
                     height={'150'}
                     border='1px' 
@@ -68,6 +87,7 @@ const AnalyticsFarming = () => {
                         <Text color='white' fontSize={'4xl'}><b>50,043,126</b></Text>
                         </VStack>
                     </Box>
+                    </motion.div>
       </GridItem>
     </Grid>
 

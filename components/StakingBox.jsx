@@ -1,8 +1,10 @@
 import React from 'react'
 import { Text, Grid, GridItem, Box, HStack } from '@chakra-ui/react';
 
-    import FarmingAddButton from './FarmingAddButton';
-    import FarmingWithdrawButton from './FarmingWithdrawButton';
+import FarmingAddButton from './FarmingAddButton';
+import FarmingWithdrawButton from './FarmingWithdrawButton';
+
+
 
 const StakingBox = () => {
   return (
