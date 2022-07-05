@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Input, Button, Text, Grid, GridItem, Box, Center, VStack, HStack, Container, 
+import { Input, Button, Text, Box, HStack, 
     Modal,
     ModalOverlay,
     ModalContent,
