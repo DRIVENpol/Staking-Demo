@@ -60,7 +60,7 @@ const FarmingWithdrawButton = () => {
             </Box>
             <br />
             <InputGroup>
-              <InputLeftAddon children='DVX-BNB LP' />
+              <InputLeftAddon>DVX-BNB LP</InputLeftAddon>
               <Input type='number' placeholder='Amount To Withdraw' />
             </InputGroup>
           </ModalBody>

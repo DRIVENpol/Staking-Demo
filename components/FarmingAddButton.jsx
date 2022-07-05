@@ -57,7 +57,7 @@ const FarmingAddButton = () => {
             </Box>
             <br />
             <InputGroup>
-              <InputLeftAddon children='DVX-BNB LP' />
+              <InputLeftAddon>DVX-BNB LP</InputLeftAddon>
               <Input type='number' placeholder='Amount To Farm' />
             </InputGroup>
           </ModalBody>
