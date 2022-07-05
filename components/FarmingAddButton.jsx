@@ -48,8 +48,13 @@ const FarmingAddButton = () => {
           <ModalHeader>Farm DVX-BNB LP</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+          <Box bgColor={'#e6e8ec'} p='2' borderRadius={'10'} mb='1'>
             <Text><b>DVX-BNB LP in your wallet:</b> 23,456</Text>
+            </Box>
+
+            <Box bgColor={'#e6e8ec'} p='2' borderRadius={'10'} mb='1'>
             <Text><b>DVX-BNB LP farmed:</b> 23,456</Text>
+            </Box>
             <br />
             <InputGroup>
               <InputLeftAddon children='DVX-BNB LP' />
