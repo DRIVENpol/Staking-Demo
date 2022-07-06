@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider>
       <Navbar />
-      <Container maxW='100%' bgGradient='linear(to-r, #0f0c29, #302b63)'><Hero />
+      <Container maxW='100%' bgGradient='linear(to-r, #0f0c29, #302b63)'>
           <Component {...pageProps} />
           </Container>
         <Footer />
