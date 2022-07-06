@@ -72,11 +72,11 @@ const FarmingWithdrawButton = () => {
               <GridItem w='100%'>
               <Button
               variant={'solid'}
-              size='md'
+              size={['xs', 'xs', 'md', 'md', 'md']}
               bgGradient='linear(to-l, #7928CA, #FF0080)'
               color='white'
               _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
-               mr={5} borderRadius={20}>
+               borderRadius={20}>
              Withdraw LP Tokens
             </Button>
 
@@ -86,7 +86,7 @@ const FarmingWithdrawButton = () => {
               <GridItem w='100%'>
               <Button
               variant={'solid'}
-              size='md'
+              size={['xs', 'xs', 'md', 'md', 'md']}
               bgGradient='linear(to-l, #7928CA, #FF0080)'
               color='white'
               _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
