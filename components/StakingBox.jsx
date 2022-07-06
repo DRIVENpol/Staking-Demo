@@ -1,14 +1,181 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text, Grid, GridItem, Box, HStack, Spinner, Center, Container, Button } from '@chakra-ui/react';
 
 import FarmingAddButton from './FarmingAddButton';
 import FarmingWithdrawButton from './FarmingWithdrawButton';
 
-
+import { networkParams } from "../Utils/Networks";
+import { ethers } from "ethers";
+import Web3Modal from "web3modal";
+import { providerOptions } from "../Utils/providerOptions";
 
 const StakingBox = () => {
 
-  const [vb, setVb] = useState(true)
+  const [provider, setProvider] = useState();
+    const [library, setLibrary] = useState();
+    const [account, setAccount] = useState();
+    const [signature, setSignature] = useState("");
+    const [isError, setError] = useState("");
+    const [chainId, setChainId] = useState();
+    const [network, setNetwork] = useState();
+    const [message, setMessage] = useState("");
+    const [signedMessage, setSignedMessage] = useState("");
+    const [verified, setVerified] = useState();
+
+    
+
+    async function connectWallet() {
+        if (typeof window !== 'undefined'){
+        try {
+            const web3Modal = new Web3Modal({
+            cacheProvider: true, // optional
+            providerOptions // required
+            });
+  
+        
+        const provider = await web3Modal.connect();
+        const library = new ethers.providers.Web3Provider(provider);
+        const accounts = await library.listAccounts();
+        const network = await library.getNetwork();
+        setProvider(provider);
+        setLibrary(library);
+        if (accounts) setAccount(accounts[0]);
+        setChainId(network.chainId);
+  
+  
+      } catch (error) {
+        setError(error);
+      }
+    }
+   
+  };
+  
+  function handleNetwork(e) {
+    const id = e.target.value;
+    setNetwork(Number(id));
+  };
+  
+  function handleInput(e) {
+    const msg = e.target.value;
+    setMessage(msg);
+  };
+  
+  async function switchNetwork() {
+    try {
+      await library.provider.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: toHex(network) }]
+      });
+    } catch (switchError) {
+      if (switchError.code === 4902) {
+        try {
+          await library.provider.request({
+            method: "wallet_addEthereumChain",
+            params: [networkParams[toHex(network)]]
+          });
+        } catch (error) {
+          setError(error);
+        }
+      }
+    }
+  };
+  
+  async function signMessage() {
+    if (!library) return;
+    try {
+      const signature = await library.provider.request({
+        method: "personal_sign",
+        params: [message, account]
+      });
+      setSignedMessage(message);
+      setSignature(signature);
+    } catch (error) {
+      setError(error);
+    }
+  };
+  
+  async function verifyMessage() {
+    if (!library) return;
+    try {
+      const verify = await library.provider.request({
+        method: "personal_ecRecover",
+        params: [signedMessage, signature]
+      });
+      setVerified(verify === account.toLowerCase());
+    } catch (error) {
+      setError(error);
+    }
+  };
+  
+  function refreshState() {
+      
+    setAccount();
+    setChainId();
+    setNetwork("");
+    setMessage("");
+    setSignature("");
+    setVerified(undefined);
+   
+  };
+  
+  async function disconnect() {
+    const web3Modal = new Web3Modal({
+      cacheProvider: true, // optional
+      providerOptions // required
+    });
+    await web3Modal.clearCachedProvider();
+    refreshState();
+  };
+  
+  useEffect(() => {
+    const web3Modal = new Web3Modal({
+      cacheProvider: true, // optional
+      providerOptions // required
+    });
+    if (web3Modal.cachedProvider) {
+      connectWallet();
+     
+    }
+  }, []);
+  
+  useEffect(() => {
+      
+    if (provider?.on) {
+      const handleAccountsChanged = (accounts) => {
+        console.log("accountsChanged", accounts);
+        if (accounts) setAccount(accounts[0]);
+      };
+  
+      const handleChainChanged = (_hexChainId) => {
+        setChainId(_hexChainId);
+      };
+  
+      const handleDisconnect = () => {
+        console.log("disconnect", error);
+        disconnect();
+      };
+  
+      provider.on("accountsChanged", handleAccountsChanged);
+      provider.on("chainChanged", handleChainChanged);
+      provider.on("disconnect", handleDisconnect);
+  
+      return () => {
+        if (provider.removeListener) {
+          provider.removeListener("accountsChanged", handleAccountsChanged);
+          provider.removeListener("chainChanged", handleChainChanged);
+          provider.removeListener("disconnect", handleDisconnect);
+        }
+      };
+    }
+  }, [provider]);
+  
+  useEffect(() => {
+    if (window.ethereum){
+      setProvider(new ethers.providers.Web3Provider(window.ethereum))
+    } else {
+      setProvider(providerOptions.walletconnect)
+    }
+  }, []);
 
   return (
     <>
@@ -22,7 +189,7 @@ const StakingBox = () => {
                     
                     >
 
-        {vb === true ? (
+        {!account ? (
           <>
           <Container height={'200'} p='5'>
           <Center>
@@ -34,6 +201,7 @@ const StakingBox = () => {
 
           <Center>
           <Button
+              onClick={connectWallet}
               variant={'solid'}
               size='sm'
               bgGradient='linear(to-l, #7928CA, #FF0080)'
