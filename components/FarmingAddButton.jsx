@@ -65,7 +65,7 @@ const FarmingAddButton = () => {
           <ModalFooter>
           <Button
               variant={'solid'}
-              size='sm'
+              size='md'
               bgGradient='linear(to-l, #7928CA, #FF0080)'
               color='white'
               maxW={['75%', null, '100%', '100%', '100%']}

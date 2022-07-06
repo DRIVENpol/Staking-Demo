@@ -67,7 +67,7 @@ const FarmingWithdrawButton = () => {
           </ModalBody>
           <ModalFooter>
 
-          <Grid templateColumns='repeat(2, 1fr)' gap={1}>
+          <Grid templateColumns='repeat(2, 1fr)' gap={1} align='center'>
               <GridItem w='100%'>
               <Button
               variant={'solid'}
