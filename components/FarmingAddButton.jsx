@@ -15,10 +15,10 @@ const FarmingAddButton = () => {
     const OverlayTwo = () => (
         <ModalOverlay
           // bg='black'
-          // opacity='0.2'
+          // opacity=''
           backdropFilter='auto'
           // backdropInvert='10%'
-          backdropBlur='2px'
+          backdropBlur='5px'
         />
       )
     
@@ -42,22 +42,23 @@ const FarmingAddButton = () => {
                       <b>+</b>
                       </Button>
 
-                      <Modal isCentered isOpen={isOpen} onClose={onClose}>
+                      <Modal isCentered isOpen={isOpen} onClose={onClose}
+                      >
         {overlay}
-        <ModalContent>
+        <ModalContent bgColor='#0d1836' color={'white'} border='2px' borderColor={'#FF0080'}>
           <ModalHeader>Farm DVX-BNB LP</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-          <Box bgColor={'#e6e8ec'} p='2' borderRadius={'10'} mb='1'>
+          <Box bgColor={'#15234a'} p='2' borderRadius={'10'} mb='1'>
             <Text><b>DVX-BNB LP in your wallet:</b> 23,456</Text>
             </Box>
 
-            <Box bgColor={'#e6e8ec'} p='2' borderRadius={'10'} mb='1'>
+            <Box bgColor={'#15234a'} p='2' borderRadius={'10'} mb='1'>
             <Text><b>DVX-BNB LP farmed:</b> 23,456</Text>
             </Box>
             <br />
             <InputGroup>
-              <InputLeftAddon>DVX-BNB LP</InputLeftAddon>
+              <InputLeftAddon bgColor={'#15234a'}>DVX-BNB LP</InputLeftAddon>
               <Input type='number' placeholder='Amount To Farm' />
             </InputGroup>
           </ModalBody>
@@ -71,7 +72,7 @@ const FarmingAddButton = () => {
               ml="30px"
               fontSize={['12px', null, null, null, '100%']}
               _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
-              display={{ base: 'none', md: 'flex' }} px={6} borderRadius={20}>
+              px={6} borderRadius={20}>
              Star Farming
             </Button>
             {/* <Button onClick={onClose}>Close</Button> */}

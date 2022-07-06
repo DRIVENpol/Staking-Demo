@@ -7,7 +7,8 @@ import { Input, Button, Text, Box, HStack,
     ModalHeader,
     ModalFooter,
     ModalBody,
-    ModalCloseButton, useDisclosure, InputLeftAddon, InputGroup } from '@chakra-ui/react';
+    ModalCloseButton, useDisclosure, InputLeftAddon, InputGroup, Center, Grid,
+  GridItem } from '@chakra-ui/react';
   
 
 const FarmingWithdrawButton = () => {
@@ -17,7 +18,7 @@ const FarmingWithdrawButton = () => {
           // opacity='0.2'
           backdropFilter='auto'
           // backdropInvert='10%'
-          backdropBlur='2px'
+          backdropBlur='5px'
         />
       )
     
@@ -43,54 +44,61 @@ const FarmingWithdrawButton = () => {
 
                       <Modal isCentered isOpen={isOpen} onClose={onClose}>
         {overlay}
-        <ModalContent>
+        <ModalContent bgColor='#0d1836' color={'white'} border='2px' borderColor={'#FF0080'}>
           <ModalHeader>Withdraw</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-          <Box bgColor={'#e6e8ec'} p='2' borderRadius={'10'} mb='1'>
+          <Box bgColor={'#15234a'} p='2' borderRadius={'10'} mb='1'>
             <Text><b>DVX-BNB LP in your wallet:</b> 23,456</Text>
             </Box>
 
-            <Box bgColor={'#e6e8ec'} p='2' borderRadius={'10'} mb='1'>
+            <Box bgColor={'#15234a'} p='2' borderRadius={'10'} mb='1'>
             <Text><b>DVX-BNB LP farmed:</b> 23,456</Text>
             </Box>
 
-            <Box bgColor={'#e6e8ec'} p='2' borderRadius={'10'} mb='1'>
+            <Box bgColor={'#15234a'} p='2' borderRadius={'10'} mb='1'>
             <Text><b>Pending Rewards:</b> 23,456</Text>
             </Box>
             <br />
             <InputGroup>
-              <InputLeftAddon>DVX-BNB LP</InputLeftAddon>
+            <InputLeftAddon bgColor={'#15234a'}>DVX-BNB LP</InputLeftAddon>
               <Input type='number' placeholder='Amount To Withdraw' />
             </InputGroup>
           </ModalBody>
           <ModalFooter>
-          <HStack>
-          <Button
+
+          <Grid templateColumns='repeat(2, 1fr)' gap={1}>
+              <GridItem w='100%'>
+              <Button
               variant={'solid'}
-              size='sm'
+              size='md'
               bgGradient='linear(to-l, #7928CA, #FF0080)'
               color='white'
-              maxW={['75%', null, '100%', '100%', '100%']}
-              fontSize={['12px', null, null, null, '100%']}
               _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
-              display={{ base: 'none', md: 'flex' }} px={6} borderRadius={20}>
+               mr={5} borderRadius={20}>
              Withdraw LP Tokens
             </Button>
 
-            <Button
+              </GridItem>
+
+
+              <GridItem w='100%'>
+              <Button
               variant={'solid'}
-              size='sm'
+              size='md'
               bgGradient='linear(to-l, #7928CA, #FF0080)'
               color='white'
-              maxW={['75%', null, '100%', '100%', '100%']}
-              fontSize={['12px', null, null, null, '100%']}
               _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
-              display={{ base: 'none', md: 'flex' }} px={6} borderRadius={20}>
+               borderRadius={20}>
              Withdraw Rewards
             </Button>
+              </GridItem>
+          </Grid>
+          
+           
             {/* <Button onClick={onClose}>Close</Button> */}
-            </HStack>
+
+
           </ModalFooter>
         </ModalContent>
       </Modal>

@@ -59,6 +59,7 @@ export default function Hero() {
             align={'center'}
             alignSelf={'center'}
             position={'relative'}>
+            <Link href='/Staking'>
           <Button
               variant={'solid'}
               size='lg'
@@ -70,7 +71,9 @@ export default function Hero() {
               px={6} borderRadius={40}>
              <b>Stake $DVX</b>
             </Button>
+            </Link>
 
+            <Link href='/Farming'>
             <Button
               variant={'solid'}
               size='lg'
@@ -82,7 +85,7 @@ export default function Hero() {
               px={6} borderRadius={40}>
              <b>Farm $DVX</b>
             </Button>
-
+            </Link>
             <Box>
             </Box>
           </Stack>
