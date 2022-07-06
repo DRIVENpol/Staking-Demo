@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { Text, Center, Container } from '@chakra-ui/react';
 import { motion, useAnimation } from 'framer-motion';
 
-import StakingBox from '../components/StakingBox';
+import FarmingBox from '../components/FarmingBox';
 import AnalyticsFarming from '../components/AnalyticsFarming';
 
 const Farming = () => {
@@ -21,7 +21,7 @@ const Farming = () => {
    <AnalyticsFarming />
 
       <Center>
-      <StakingBox />
+      <FarmingBox />
       </Center>
 
     </Container>

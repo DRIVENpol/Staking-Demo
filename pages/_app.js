@@ -2,7 +2,6 @@
 import { ChakraProvider } from '@chakra-ui/react'
 
 import Navbar from '../components/Navbar'
-import Hero from '../components/Hero'
 import Footer from '../components/Footer'
 
 import { Container, Text } from '@chakra-ui/react';

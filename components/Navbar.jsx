@@ -238,7 +238,7 @@ const Navbar = () => {
           </HStack>
           <Flex alignItems={'center'} mr={20}>
 
-         {account ? (<Button onClick={disconnect}
+         <Button onClick={disconnect}
               variant={'solid'}
               size='sm'
               bgGradient='linear(to-l, #7928CA, #FF0080)'
@@ -248,19 +248,8 @@ const Navbar = () => {
               fontSize={['12px', null, null, null, '100%']}
               _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
               display={{ base: 'none', md: 'flex' }} px={6} borderRadius={20}>
-             Disconnect
-            </Button>) : (<Button onClick={connectWallet}
-              variant={'solid'}
-              size='sm'
-              bgGradient='linear(to-l, #7928CA, #FF0080)'
-              color='white'
-              maxW={['75%', null, '100%', '100%', '100%']}
-              ml="30px"
-              fontSize={['12px', null, null, null, '100%']}
-              _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
-              display={{ base: 'none', md: 'flex' }} px={6} borderRadius={20}>
-             Connect Your Wallet
-            </Button>)}
+             Official Website
+            </Button>
 
           </Flex>
         </Flex>
@@ -271,12 +260,9 @@ const Navbar = () => {
             <Button colorScheme='blackAlpha'><Link href="/Staking">Stake $DVX</Link></Button>
             <Button colorScheme='blackAlpha'><Link href="/Farming">Farm $DVX</Link></Button>
             
-            {account ? (<Button onClick={disconnect} width={'100%'} bgGradient='linear(to-l, #7928CA, #FF0080)' color={'white'} _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}>
-           Disconnect
-            </Button>):(<Button onClick={connectWallet} width={'100%'} bgGradient='linear(to-l, #7928CA, #FF0080)' color={'white'} _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}>
-           Connect Your Wallet
-            </Button>)
-            }
+            <Button width={'100%'} bgGradient='linear(to-l, #7928CA, #FF0080)' color={'white'} _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}>
+           Official Website
+            </Button>
             </Stack>
           </Box>
         ) : null}
