@@ -15,6 +15,7 @@ import {
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 
 
+
 const Navbar = () => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
