@@ -68,15 +68,15 @@ const FarmingWithdrawButton = () => {
           </ModalBody>
           <ModalFooter>
 
-          <Grid templateColumns='repeat(2, 1fr)' gap={1} align='center'>
-              <GridItem w='100%'>
+          <Grid templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(2, 1fr)', 'repeat(2, 1fr)', ]} gap={1} align='right'>
+              <GridItem w='100%' >
               <Button
               variant={'solid'}
-              size={['xs', 'xs', 'md', 'md', 'md']}
+              size='md'
               bgGradient='linear(to-l, #7928CA, #FF0080)'
               color='white'
               _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
-               borderRadius={20}>
+               borderRadius={20} mb={['2', '2', null, null, null]}>
              Withdraw LP Tokens
             </Button>
 
@@ -86,7 +86,7 @@ const FarmingWithdrawButton = () => {
               <GridItem w='100%'>
               <Button
               variant={'solid'}
-              size={['xs', 'xs', 'md', 'md', 'md']}
+              size='md'
               bgGradient='linear(to-l, #7928CA, #FF0080)'
               color='white'
               _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}

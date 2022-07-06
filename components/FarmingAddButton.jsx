@@ -68,12 +68,9 @@ const FarmingAddButton = () => {
               size='md'
               bgGradient='linear(to-l, #7928CA, #FF0080)'
               color='white'
-              maxW={['75%', null, '100%', '100%', '100%']}
-              ml="30px"
-              fontSize={['12px', null, null, null, '100%']}
               _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
-              px={6} borderRadius={20}>
-             Star Farming
+               borderRadius={20}>
+             Start Farming
             </Button>
             {/* <Button onClick={onClose}>Close</Button> */}
           </ModalFooter>
