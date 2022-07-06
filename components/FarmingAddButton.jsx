@@ -42,10 +42,10 @@ const FarmingAddButton = () => {
                       <b>+</b>
                       </Button>
 
-                      <Modal isCentered isOpen={isOpen} onClose={onClose}
+                      <Modal isCentered isOpen={isOpen} onClose={onClose} size='2xl' 
                       >
         {overlay}
-        <ModalContent bgColor='#0d1836' color={'white'} border='2px' borderColor={'#FF0080'}>
+        <ModalContent bgColor='#0d1836' color={'white'} border='2px' borderColor={'#FF0080'} p='6' borderRadius={20}>
           <ModalHeader>Farm DVX-BNB LP</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
