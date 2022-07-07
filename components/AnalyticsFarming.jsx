@@ -6,7 +6,7 @@ import { motion, useAnimation } from 'framer-motion';
 import Background from '../assets/bg-tabs.png';
 
 
-const AnalyticsFarming = () => {
+const AnalyticsFarming = (props) => {
   return (
     <>
             <Grid templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(2, 1fr)', ]} 
@@ -45,7 +45,7 @@ const AnalyticsFarming = () => {
                     >
                     <VStack p={7}>
                         <Text color="#FF0080" mb='-2.5' fontSize={'1xl'}><b>TVL:</b></Text>
-                        <Text color='white' fontSize={'4xl'}><b>$123,456</b></Text>
+                        <Text color='white' fontSize={'4xl'}><b>${props.lockedTokens}</b></Text>
                         </VStack>
                     </Box>
                     </motion.div>
@@ -64,7 +64,7 @@ const AnalyticsFarming = () => {
                     >
                     <VStack p={7}>
                         <Text color="#FF0080" mb='-2.5' fontSize={'1xl'}><b>Active Farmers:</b></Text>
-                        <Text color='white' fontSize={'4xl'}><b>1,256</b></Text>
+                        <Text color='white' fontSize={'4xl'}><b>{props.stakers}</b></Text>
                         </VStack>
                     </Box>
                     </motion.div>
@@ -84,7 +84,7 @@ const AnalyticsFarming = () => {
                     >
                     <VStack p={7}>
                         <Text color="#FF0080" mb='-2.5' fontSize={'1xl'}><b>Given Rewards(DVX):</b></Text>
-                        <Text color='white' fontSize={'4xl'}><b>50,043,126</b></Text>
+                        <Text color='white' fontSize={'4xl'}><b>{props.givenRewards}</b></Text>
                         </VStack>
                     </Box>
                     </motion.div>
