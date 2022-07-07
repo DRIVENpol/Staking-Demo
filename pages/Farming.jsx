@@ -14,6 +14,8 @@ const Farming = () => {
 
   const mainScAddress = "0x5F787db64B1313B981579A02673559f292f552DB";
 
+  const tokenPrice = 2.47;
+
   const [poolDetails, setPollDetails] = useState({
     lockedTokens: 0,
     activeFarmers: 0,
@@ -44,7 +46,7 @@ const Farming = () => {
     let _givenRWithoutDecimals = _givenRConverted / 10 ** 18;
 
     setPollDetails({
-      lockedTokens: _tvlWithoutDecimals.toLocaleString(),
+      lockedTokens: (_tvlWithoutDecimals * tokenPrice).toLocaleString(),
       activeFarmers: Number(_stakers),
       givenRewards: _givenRWithoutDecimals.toLocaleString(),
       owner: _owner
