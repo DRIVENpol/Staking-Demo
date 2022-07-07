@@ -14,7 +14,7 @@ const Farming = () => {
 
   const mainScAddress = "0x5F787db64B1313B981579A02673559f292f552DB";
 
-  const tokenPrice = 2.47;
+  const tokenPrice = 2.476;
 
   const [poolDetails, setPollDetails] = useState({
     lockedTokens: 0,
