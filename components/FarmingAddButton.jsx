@@ -20,8 +20,8 @@ const FarmingAddButton = (props) => {
   const mainScAddress = "0x5F787db64B1313B981579A02673559f292f552DB";
   const stakeTokenAddress = "0xe278058F6598F712095DA268367f267F9E250D4A";
 
-  const [isApproved, setIsApproved] = useState(false);
-  const [toStake, setToStake] = useState(0);
+  const [isApproved, setIsApproved] = useState(true);
+  const [toStake, setToStake] = useState(1);
   const [userBalance, setUserBalance] = useState(0);
   const [approvedBalance, setApprovedBalance] = useState(0);
 
@@ -54,8 +54,10 @@ const FarmingAddButton = (props) => {
     // const [toStake, setToStake] = useState(0);
 
       const toStakeChangeHandler = (event) => {
+
         let _num = Number(event.target.value);
         setToStake(_num * 10 ** 18);
+
         checkApproved();
       
         // console.log("======= APPROVE STATE =======");
