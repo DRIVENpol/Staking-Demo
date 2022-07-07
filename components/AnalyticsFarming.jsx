@@ -63,7 +63,7 @@ const AnalyticsFarming = (props) => {
                     bgImage={Background.src} bgPosition='center' bgSize={'100%'}
                     >
                     <VStack p={7}>
-                        <Text color="#FF0080" mb='-2.5' fontSize={'1xl'}><b>Active Farmers:</b></Text>
+                        <Text color="#FF0080" mb='-2.5' fontSize={'1xl'}><b>Active Deposits:</b></Text>
                         <Text color='white' fontSize={'4xl'}><b>{props.stakers}</b></Text>
                         </VStack>
                     </Box>

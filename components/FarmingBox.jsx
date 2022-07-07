@@ -11,6 +11,15 @@ import { providerOptions } from "../Utils/providerOptions";
 
 const StakingBox = () => {
 
+  const mainScAddress = "0x5F787db64B1313B981579A02673559f292f552DB";
+  const stakeTokenAddress = "0xe278058F6598F712095DA268367f267F9E250D4A";
+
+  const [isApproved, setIsApproved] = useState(false);
+  // const [approvedAmount, setApprovedAmount] = useState(0);
+
+  const [userBalance, setUserBalance] = useState(0);
+  const [toStake, setToStake] = useState(0);
+
   const [provider, setProvider] = useState();
   const [library, setLibrary] = useState();
   const [account, setAccount] = useState();
@@ -22,8 +31,26 @@ const StakingBox = () => {
   const [signedMessage, setSignedMessage] = useState("");
   const [verified, setVerified] = useState();
 
+
+
+  async function checkApproved() {
+    const abi =["function balanceOf(address account) public view returns (uint256)",
+    "function allowance(address owner, address spender) public view returns (uint256)"];
+
+    const connectedContract = new ethers.Contract(stakeTokenAddress, abi, provider);
+
+    let _userBalance = await connectedContract.balanceOf(account);
+    let _allowedBalance = await connectedContract.allowance(account, mainScAddress);
+    setUserBalance(Number(_userBalance));
+
+    if (_allowedBalance > toStake * 10 ** 18) {
+      setIsApproved(true);
+      console.log(true);
+    }
+  }
   
 
+  
   async function connectWallet() {
       if (typeof window !== 'undefined'){
       try {
@@ -41,8 +68,7 @@ const StakingBox = () => {
       setLibrary(library);
       if (accounts) setAccount(accounts[0]);
       setChainId(network.chainId);
-
-
+      checkApproved();
     } catch (error) {
       setError(error);
     }

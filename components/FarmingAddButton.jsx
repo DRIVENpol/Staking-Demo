@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Input, Button, Text, Box, 
     Modal,
@@ -24,6 +24,18 @@ const FarmingAddButton = () => {
     
       const { isOpen, onOpen, onClose } = useDisclosure()
       const [overlay, setOverlay] = React.useState(<OverlayTwo />)
+
+      // const [toStake, setToStake] = useState(0);
+
+      // const toStakeChangeHandler = (event) => {
+      //   // setToStake(event.target.value);
+      //   // console.log(event.target.value)
+      //   props.pd(event.target.value);
+      // }
+
+
+
+      
 
   return (
    <>
@@ -63,6 +75,8 @@ const FarmingAddButton = () => {
             </InputGroup>
           </ModalBody>
           <ModalFooter>
+
+        
           <Button
               variant={'solid'}
               size='md'
@@ -72,6 +86,9 @@ const FarmingAddButton = () => {
                borderRadius={20}>
              Start Farming
             </Button>
+          
+
+
             {/* <Button onClick={onClose}>Close</Button> */}
           </ModalFooter>
         </ModalContent>
