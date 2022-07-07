@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { networkParams } from "../Utils/Networks";
 import { ethers } from "ethers";
@@ -22,7 +22,7 @@ const FarmingAddButton = (props) => {
 
   const [isApproved, setIsApproved] = useState(true);
   const [toStake, setToStake] = useState(1);
-  const [userBalance, setUserBalance] = useState(0);
+  const [userBalance, setUserBalance] = useState("");
   const [approvedBalance, setApprovedBalance] = useState(0);
 
 
@@ -41,7 +41,7 @@ const FarmingAddButton = (props) => {
     let _allowedBalance = await connectedContract.allowance(props.acc, mainScAddress);
     let _userBalance = await connectedContract.balanceOf(props.acc);
 
-    setUserBalance(_userBalance);
+    setUserBalance((_userBalance / 10 ** 18).toLocaleString());
     setApprovedBalance(_allowedBalance);
 
     if(toStake > _allowedBalance) {
@@ -51,6 +51,11 @@ const FarmingAddButton = (props) => {
     }
 
 };
+
+useEffect(() => {
+  checkApproved();
+}, [])
+
     // const [toStake, setToStake] = useState(0);
 
       const toStakeChangeHandler = (event) => {
@@ -111,7 +116,7 @@ const FarmingAddButton = (props) => {
           <ModalCloseButton />
           <ModalBody>
           <Box bgColor={'#15234a'} p='2' borderRadius={'10'} mb='1'>
-            <Text><b>DVX-BNB LP in your wallet:</b> 23,456</Text>
+            <Text><b>DVX-BNB LP in your wallet:</b> {userBalance}</Text>
             </Box>
 
             <Box bgColor={'#15234a'} p='2' borderRadius={'10'} mb='1'>
