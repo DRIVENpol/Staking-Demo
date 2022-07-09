@@ -62,7 +62,7 @@ const FarmingAddButton = (props) => {
         
         const { ethereum } = window;
         const provider = new ethers.providers.Web3Provider(ethereum);
-        // const signer = provider.getSigner();
+
 
         setProvider(provider);
         setLibrary(library);
@@ -120,7 +120,7 @@ const FarmingAddButton = (props) => {
         await _isApproved.wait();
         setIsLoadingApprove(false);
         allowanceErc20();
-        // manipulateNotif();
+
 
 
         console.log(_isApproved);
