@@ -21,7 +21,7 @@ const FarmingAddButton = (props) => {
   
 
   const mainScAddress = "0x5F787db64B1313B981579A02673559f292f552DB";
-  const stakeTokenAddress = "0xc0F72E77F46db4C8a5787BAa8B6f8C0ee7aBA3F6";
+  const stakeTokenAddress = "0xa22bcE7B783c6D73Fb0c89a7b729CF86b36E8BED";
 
       // Wallet Connect
       const [provider, setProvider] = useState();
@@ -50,6 +50,9 @@ const FarmingAddButton = (props) => {
 
   const [overlay, setOverlay] = React.useState(<OverlayTwo />)
 
+  // ======= DETAILS  =======
+
+
   // ======= APPROVE  =======
   const [ercApprove, setErcApprove] = useState(0);
 
@@ -76,22 +79,7 @@ const FarmingAddButton = (props) => {
 
         let fAmount = _isApproved / 10 ** _decimals;
 
-        console.log("==== APPROVED: " + fAmount + " ====");
         setErcApprove(fAmount);
-
-        // console.log("==== ERC20 APPROVE: " + _isApproved + " ====");
-
-
-        // setIsLoading(true);
-        // await _createERC20.wait();
-        // setIsLoading(false);
-        // manipulateNotif();
-
-
-        // console.log(_createERC20);
-        // console.log(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${_createERC20.hash}`);
-        // setTransaction(`https://rinkeby.etherscan.io/tx/${_createERC20.hash}`);
-
 
       } catch (error) {
         
@@ -100,11 +88,12 @@ const FarmingAddButton = (props) => {
   };
 
   useEffect(() => {
-    // console.log("==== APPROVED: " + ercApprove + " ====");
+    allowanceErc20();
   }, [])
   
 
   const [tAmount, setTAmount] = useState(0);
+  const [isLoadingApprove, setIsLoadingApprove] = useState(false);
 
   const approveErc20 = async () => {
     if (typeof window !== 'undefined'){
@@ -127,9 +116,9 @@ const FarmingAddButton = (props) => {
         let _isApproved = await connectedContract.approve(mainScAddress, _userBalance, {gasLimit:6000000});
         
 
-        // setIsLoadingApprove(true);
+        setIsLoadingApprove(true);
         await _isApproved.wait();
-        // setIsLoadingApprove(false);
+        setIsLoadingApprove(false);
         allowanceErc20();
         // manipulateNotif();
 
@@ -343,7 +332,37 @@ const FarmingAddButton = (props) => {
           </ModalBody>
           <ModalFooter>
 
-         
+         {ercApprove < tAmount ? (
+          <>
+          { !isLoadingApprove ? (<>
+            <Button
+              onClick={approveErc20}
+              variant={'solid'}
+              size='md'
+              bgGradient='linear(to-l, #7928CA, #FF0080)'
+              color='white'
+              _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
+               borderRadius={20}>
+            Approve
+            </Button>
+          </>):(
+            <>
+            <Button
+              isLoading
+              loadingText='Approving...'
+              variant={'solid'}
+              size='md'
+              bgGradient='linear(to-l, #7928CA, #FF0080)'
+              color='white'
+              _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
+               borderRadius={20}>
+            Approve
+            </Button>
+            </>
+          )}
+          
+          </>
+         ) : (<>
           <Button
               onClick={approveErc20}
               variant={'solid'}
@@ -352,8 +371,10 @@ const FarmingAddButton = (props) => {
               color='white'
               _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
                borderRadius={20}>
-            Farm
+            Start Farming
             </Button>
+         </>)}
+         
            
 
             {/* <Button onClick={onClose}>Close</Button> */}
