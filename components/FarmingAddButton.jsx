@@ -87,7 +87,7 @@ const FarmingAddButton = (props) => {
           isClosable: true,
         });
         allowanceErc20();
-
+        userInfo();
 
 
 
@@ -217,7 +217,6 @@ const FarmingAddButton = (props) => {
         const library = new ethers.providers.Web3Provider(provider);
         const accounts = await library.listAccounts();
         const network = await library.getNetwork();
-        
         setProvider(provider);
         setLibrary(library);
         if (accounts) setAccount(accounts[0]);
@@ -371,7 +370,7 @@ const FarmingAddButton = (props) => {
                         px={15} borderRadius={40}
                         onClick={() => {
                           setOverlay(<OverlayTwo />)
-                          onOpen();
+                          onOpen()
                         }}>
                       <b>+</b>
                       </Button>

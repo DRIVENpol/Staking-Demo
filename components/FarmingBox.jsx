@@ -187,6 +187,7 @@ useEffect(() => {
 }, [provider]);
 
 useEffect(() => {
+  userInfo();
   if (window.ethereum){
     setProvider(new ethers.providers.Web3Provider(window.ethereum))
   } else {
