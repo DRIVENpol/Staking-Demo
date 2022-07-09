@@ -51,6 +51,20 @@ const FarmingAddButton = (props) => {
   const [overlay, setOverlay] = React.useState(<OverlayTwo />)
 
   // ======= DETAILS  =======
+  const [userBalance, setUserBalance] = useState('');
+
+  const userInfo = async () => {
+    const iProvider = new ethers.providers.JsonRpcProvider("https://eth-rinkeby.alchemyapi.io/v2/qSQowMkVnht5prnNyhu9DF8w-oBdrcww");
+
+        const abi = [
+        "function balanceOf(address account) public view returns (uint256)",
+        "function decimals() public view returns (uint8)"];
+
+        const connectedContract = new ethers.Contract(stakeTokenAddress, abi, iProvider);
+        let _decimals = await connectedContract.decimals();
+        let _userBalance = await connectedContract.balanceOf(account);
+        setUserBalance((_userBalance / 10 ** _decimals).toLocaleString());
+  };
 
 
   // ======= APPROVE  =======
@@ -89,6 +103,7 @@ const FarmingAddButton = (props) => {
 
   useEffect(() => {
     allowanceErc20();
+    userInfo();
   }, [])
   
 
@@ -315,7 +330,7 @@ const FarmingAddButton = (props) => {
           <ModalCloseButton />
           <ModalBody>
           <Box bgColor={'#15234a'} p='2' borderRadius={'10'} mb='1'>
-            <Text><b>DVX-BNB LP in your wallet:</b> userBalance</Text>
+            <Text><b>DVX-BNB LP in your wallet:</b> {userBalance}</Text>
             </Box>
 
             <Box bgColor={'#15234a'} p='2' borderRadius={'10'} mb='1'>
