@@ -17,64 +17,28 @@ import { Input, Button, Text, Box,
 
 const FarmingAddButton = (props) => {
 
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  
+
   const mainScAddress = "0x5F787db64B1313B981579A02673559f292f552DB";
   const stakeTokenAddress = "0xe278058F6598F712095DA268367f267F9E250D4A";
 
-  const [isApproved, setIsApproved] = useState(true);
-  const [toStake, setToStake] = useState(1);
-  const [userBalance, setUserBalance] = useState("");
-  const [approvedBalance, setApprovedBalance] = useState(0);
+      // Wallet Connect
+      const [provider, setProvider] = useState();
+      const [library, setLibrary] = useState();
+      const [account, setAccount] = useState();
+      const [signature, setSignature] = useState("");
+      const [isError, setError] = useState("");
+      const [isErrorErc, setErrorErc] = useState("");
+      const [isErrorNft, setErrorNft] = useState("");
+      const [isErrorLock, setErrorLock] = useState("");
+      const [chainId, setChainId] = useState();
+      const [network, setNetwork] = useState();
+      const [message, setMessage] = useState("");
+      const [signedMessage, setSignedMessage] = useState("");
+      const [verified, setVerified] = useState();
 
-
-
-  async function checkApproved() {
-
-    const iProvider = new ethers.providers.JsonRpcProvider("https://eth-rinkeby.alchemyapi.io/v2/qSQowMkVnht5prnNyhu9DF8w-oBdrcww");
-
-    const abi =["function balanceOf(address account) public view returns (uint256)",
-    "function allowance(address owner, address spender) public view returns (uint256)"];
-
-    const connectedContract = new ethers.Contract(stakeTokenAddress, abi, iProvider);
-
-
-    // setUserBalance(Number(_userBalance));
-    let _allowedBalance = await connectedContract.allowance(props.acc, mainScAddress);
-    let _userBalance = await connectedContract.balanceOf(props.acc);
-
-    setUserBalance((_userBalance / 10 ** 18).toLocaleString());
-    setApprovedBalance(_allowedBalance);
-
-    if(toStake > _allowedBalance) {
-      setIsApproved(false);
-    } else {
-      setIsApproved(true);
-    }
-
-};
-
-useEffect(() => {
-  checkApproved();
-}, [])
-
-    // const [toStake, setToStake] = useState(0);
-
-      const toStakeChangeHandler = (event) => {
-
-        let _num = Number(event.target.value);
-        setToStake(_num * 10 ** 18);
-
-        checkApproved();
-      
-        // console.log("======= APPROVE STATE =======");
-        // console.log("To stake: " + Number(toStake));
-        // console.log("User Balance: " + userBalance);
-        // console.log("Approved Balance: " + approvedBalance);
-        // console.log("Is approved? " + isApproved);
-        // console.log("==============");
-      }
-
-
-      const OverlayTwo = () => (
+  const OverlayTwo = () => (
         <ModalOverlay
           // bg='black'
           // opacity=''
@@ -83,10 +47,258 @@ useEffect(() => {
           backdropBlur='5px'
         />
       )
-    
-      const { isOpen, onOpen, onClose } = useDisclosure()
-      const [overlay, setOverlay] = React.useState(<OverlayTwo />)
 
+  const [overlay, setOverlay] = React.useState(<OverlayTwo />)
+
+  // ======= APPROVE  =======
+  const [ercApprove, setErcApprove] = useState(0);
+
+  const allowanceErc20 = async () => {
+    if (typeof window !== 'undefined'){
+      try {
+        
+        const { ethereum } = window;
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        // const signer = provider.getSigner();
+
+        setProvider(provider);
+        setLibrary(library);
+
+        const abi = [
+        "function allowance(address owner, address spender) public view returns (uint256)",
+        "function decimals() public view returns (uint8)"];
+
+        const connectedContract = new ethers.Contract(stakeTokenAddress, abi, provider);
+
+        let _decimals = await connectedContract.decimals();
+        
+        let _isApproved = await connectedContract.allowance(account, mainScAddress);
+
+        let fAmount = _isApproved / 10 ** _decimals;
+
+        // console.log("==== APPROVED: " + fAmount + " ====");
+        setErcApprove(fAmount);
+
+        // console.log("==== ERC20 APPROVE: " + ercApprove + " ====");
+
+
+        // setIsLoading(true);
+        // await _createERC20.wait();
+        // setIsLoading(false);
+        // manipulateNotif();
+
+
+        // console.log(_createERC20);
+        // console.log(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${_createERC20.hash}`);
+        // setTransaction(`https://rinkeby.etherscan.io/tx/${_createERC20.hash}`);
+
+
+      } catch (error) {
+        
+      }
+    }
+  };
+
+  useEffect(() => {
+    // console.log("==== APPROVED: " + ercApprove + " ====");
+  }, [])
+  
+
+  const [tAmount, setTAmount] = useState(0);
+
+  const approveErc20 = async () => {
+    if (typeof window !== 'undefined'){
+      try {
+        
+        const { ethereum } = window;
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+
+        setProvider(provider);
+        setLibrary(library);
+
+        const abi = ["function approve(address spender, uint256 amount) public returns (bool)",
+        "function decimals() public view returns (uint8)"];
+        
+        const connectedContract = new ethers.Contract(stakeTokenAddress, abi, signer);
+
+        let _decimals = await connectedContract.decimals();
+        let _tAmount = tAmount * 10 ** _decimals;
+        console.log("==== TO APPROVE: " + _tAmount);
+
+        let _isApproved = await connectedContract.approve(mainScAddress, _tAmount.toString());
+
+
+        // setIsLoadingApprove(true);
+        // await _isApproved.wait();
+        // setIsLoadingApprove(false);
+        allowanceErc20();
+        // manipulateNotif();
+
+
+        console.log(_isApproved);
+        console.log(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${_isApproved.hash}`);
+        setTransaction(`https://rinkeby.etherscan.io/tx/${_isApproved.hash}`);
+
+
+      } catch (error) {
+        
+      }
+    }
+  };
+
+
+  // ======= CONNECTION  =======
+  const connectWallet = async () => {
+    if (typeof window !== 'undefined'){
+      try {
+        const web3Modal = new Web3Modal({
+          cacheProvider: true, // optional
+          providerOptions // required
+        });
+
+        
+        const provider = await web3Modal.connect();
+        const library = new ethers.providers.Web3Provider(provider);
+        const accounts = await library.listAccounts();
+        const network = await library.getNetwork();
+        setProvider(provider);
+        setLibrary(library);
+        if (accounts) setAccount(accounts[0]);
+        setChainId(network.chainId);
+
+      } catch (error) {
+        setError(error);
+      }
+    }
+   
+  };
+
+  const handleNetwork = (e) => {
+    const id = e.target.value;
+    setNetwork(Number(id));
+  };
+
+  const handleInput = (e) => {
+    const msg = e.target.value;
+    setMessage(msg);
+  };
+
+  const switchNetwork = async () => {
+    try {
+      await library.provider.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: toHex(network) }]
+      });
+    } catch (switchError) {
+      if (switchError.code === 4902) {
+        try {
+          await library.provider.request({
+            method: "wallet_addEthereumChain",
+            params: [networkParams[toHex(network)]]
+          });
+        } catch (error) {
+          setError(error);
+        }
+      }
+    }
+  };
+
+  const signMessage = async () => {
+    if (!library) return;
+    try {
+      const signature = await library.provider.request({
+        method: "personal_sign",
+        params: [message, account]
+      });
+      setSignedMessage(message);
+      setSignature(signature);
+    } catch (error) {
+      setError(error);
+    }
+  };
+
+  const verifyMessage = async () => {
+    if (!library) return;
+    try {
+      const verify = await library.provider.request({
+        method: "personal_ecRecover",
+        params: [signedMessage, signature]
+      });
+      setVerified(verify === account.toLowerCase());
+    } catch (error) {
+      setError(error);
+    }
+  };
+
+  const refreshState = () => {
+    setAccount();
+    setChainId();
+    setNetwork("");
+    setMessage("");
+    setSignature("");
+    setVerified(undefined);
+   
+  };
+
+  const disconnect = async () => {
+    const web3Modal = new Web3Modal({
+      cacheProvider: true, // optional
+      providerOptions // required
+    });
+    await web3Modal.clearCachedProvider();
+    refreshState();
+  };
+
+  useEffect(() => {
+    const web3Modal = new Web3Modal({
+      cacheProvider: true, // optional
+      providerOptions // required
+    });
+    if (web3Modal.cachedProvider) {
+      connectWallet();
+     
+    } 
+  }, []);
+
+  useEffect(() => {
+      
+    if (provider?.on) {
+      const handleAccountsChanged = (accounts) => {
+        console.log("accountsChanged", accounts);
+        if (accounts) setAccount(accounts[0]);
+      };
+
+      const handleChainChanged = (_hexChainId) => {
+        setChainId(_hexChainId);
+      };
+
+      const handleDisconnect = () => {
+        console.log("disconnect", error);
+        disconnect();
+      };
+
+      provider.on("accountsChanged", handleAccountsChanged);
+      provider.on("chainChanged", handleChainChanged);
+      provider.on("disconnect", handleDisconnect);
+
+      return () => {
+        if (provider.removeListener) {
+          provider.removeListener("accountsChanged", handleAccountsChanged);
+          provider.removeListener("chainChanged", handleChainChanged);
+          provider.removeListener("disconnect", handleDisconnect);
+        }
+      };
+    }
+  }, [provider]);
+
+  useEffect(() => {
+    if (window.ethereum){
+      setProvider(new ethers.providers.Web3Provider(window.ethereum))
+    } else {
+      setProvider(providerOptions.walletconnect)
+    }
+}, []);
 
 
       
@@ -116,7 +328,7 @@ useEffect(() => {
           <ModalCloseButton />
           <ModalBody>
           <Box bgColor={'#15234a'} p='2' borderRadius={'10'} mb='1'>
-            <Text><b>DVX-BNB LP in your wallet:</b> {userBalance}</Text>
+            <Text><b>DVX-BNB LP in your wallet:</b> userBalance</Text>
             </Box>
 
             <Box bgColor={'#15234a'} p='2' borderRadius={'10'} mb='1'>
@@ -125,35 +337,29 @@ useEffect(() => {
             <br />
             <InputGroup>
               <InputLeftAddon bgColor={'#15234a'}>DVX-BNB LP</InputLeftAddon>
-              <Input onChange={toStakeChangeHandler} type='number' placeholder='Amount To Farm' />
+              <Input
+              onChange={(event) => {
+                setTAmount(event.target.value);
+                allowanceErc20();
+                // console.log("==== APPROVED: " + ercApprove + " ====");
+                }}
+              type='number' placeholder='Amount To Farm' />
             </InputGroup>
           </ModalBody>
           <ModalFooter>
 
-        {isApproved === true ? (<>
-          <Button
-              variant={'solid'}
-              size='md'
-              bgGradient='linear(to-l, #7928CA, #FF0080)'
-              color='white'
-              _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
-               borderRadius={20}>
-             Start Farming
-            </Button>
-        </>) : (<>
-          <Button
-              variant={'solid'}
-              size='md'
-              bgGradient='linear(to-l, #7928CA, #FF0080)'
-              color='white'
-              _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
-               borderRadius={20}>
-             Approve
-            </Button>
-        </>)}
          
-          
-
+          <Button
+              onClick={approveErc20}
+              variant={'solid'}
+              size='md'
+              bgGradient='linear(to-l, #7928CA, #FF0080)'
+              color='white'
+              _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
+               borderRadius={20}>
+            Farm
+            </Button>
+           
 
             {/* <Button onClick={onClose}>Close</Button> */}
           </ModalFooter>
