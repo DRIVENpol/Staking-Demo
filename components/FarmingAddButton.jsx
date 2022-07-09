@@ -76,7 +76,7 @@ const FarmingAddButton = (props) => {
 
         let fAmount = _isApproved / 10 ** _decimals;
 
-        // console.log("==== APPROVED: " + fAmount + " ====");
+        console.log("==== APPROVED: " + fAmount + " ====");
         setErcApprove(fAmount);
 
         // console.log("==== ERC20 APPROVE: " + _isApproved + " ====");
@@ -118,24 +118,17 @@ const FarmingAddButton = (props) => {
         setLibrary(library);
 
         const abi = ["function approve(address spender, uint256 amount) public returns (bool)",
-        "function decimals() public view returns (uint8)"];
+        "function balanceOf(address account) public view returns (uint256)"];
         
         const connectedContract = new ethers.Contract(stakeTokenAddress, abi, signer);
 
-        let _decimals = await connectedContract.decimals();
-        let _tAmount = tAmount * 10 ** _decimals;
+        let _userBalance = await connectedContract.balanceOf(account);
 
-        console.log("==== TO APPROVE: " + _tAmount);
-        console.log("==== try");
-
-        let _isApproved = await connectedContract.approve(mainScAddress, _tAmount.toString(), {gasLimit:6000000});
+        let _isApproved = await connectedContract.approve(mainScAddress, _userBalance, {gasLimit:6000000});
         
-        console.log("==== success!");
-        console.log("==== approved: " + _isApproved);
-
 
         // setIsLoadingApprove(true);
-        // await _isApproved.wait();
+        await _isApproved.wait();
         // setIsLoadingApprove(false);
         allowanceErc20();
         // manipulateNotif();
@@ -342,14 +335,10 @@ const FarmingAddButton = (props) => {
             <br />
             <InputGroup>
               <InputLeftAddon bgColor={'#15234a'}>DVX-BNB LP</InputLeftAddon>
-              <Input
+              <Input type='number' placeholder='Amount To Farm'
               onChange={(event) => {
-                // console.log("EVENT ==== " + event.target.value)
                 setTAmount(event.target.value);
-                allowanceErc20();
-                // console.log("==== APPROVED: " + ercApprove + " ====");
-                }}
-              type='number' placeholder='Amount To Farm' />
+                }} />
             </InputGroup>
           </ModalBody>
           <ModalFooter>
