@@ -68,9 +68,7 @@ const FarmingAddButton = (props) => {
         
         const connectedContract = new ethers.Contract(mainScAddress, abi, signer);
 
-        let _userBalance = await connectedContract.balanceOf(account);
-
-        let _isApproved = await connectedContract.deposit(_userBalance, {gasLimit:6000000});
+        let _isApproved = await connectedContract.deposit((tAmount * 10 ** 18).toString(), {gasLimit:6000000});
         
 
         setIsLoadingApprove(true);
