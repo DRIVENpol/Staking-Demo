@@ -70,7 +70,7 @@ const FarmingAddButton = (props) => {
         "function balanceOf(address account) public view returns (uint256)",
         "function deposit(uint256 _amount) external"];
         
-        const connectedContract = new ethers.Contract(mainScAddress, abi, signer);
+        const connectedContract = new ethers.Contract(ethers.utils.getAddress(mainScAddress), abi, signer);
 
         let _farming = await connectedContract.deposit((tAmount * 10 ** 18).toString(), {gasLimit:6000000});
         
@@ -87,7 +87,7 @@ const FarmingAddButton = (props) => {
           isClosable: true,
         });
         allowanceErc20();
-        userInfo();
+
 
 
 
@@ -113,7 +113,7 @@ const FarmingAddButton = (props) => {
         "function balanceOf(address account) public view returns (uint256)",
         "function decimals() public view returns (uint8)"];
 
-        const connectedContract = new ethers.Contract(stakeTokenAddress, abi, iProvider);
+        const connectedContract = new ethers.Contract(ethers.utils.getAddress(stakeTokenAddress), abi, iProvider);
         let _decimals = await connectedContract.decimals();
         let _userBalance = await connectedContract.balanceOf(account);
         setUserBalance((_userBalance / 10 ** _decimals).toLocaleString());
@@ -138,7 +138,7 @@ const FarmingAddButton = (props) => {
         "function allowance(address owner, address spender) public view returns (uint256)",
         "function decimals() public view returns (uint8)"];
 
-        const connectedContract = new ethers.Contract(stakeTokenAddress, abi, provider);
+        const connectedContract = new ethers.Contract(ethers.utils.getAddress(stakeTokenAddress), abi, provider);
 
         let _decimals = await connectedContract.decimals();
         
@@ -177,7 +177,7 @@ const FarmingAddButton = (props) => {
         const abi = ["function approve(address spender, uint256 amount) public returns (bool)",
         "function balanceOf(address account) public view returns (uint256)"];
         
-        const connectedContract = new ethers.Contract(stakeTokenAddress, abi, signer);
+        const connectedContract = new ethers.Contract(ethers.utils.getAddress(stakeTokenAddress), abi, signer);
 
         let _userBalance = await connectedContract.balanceOf(account);
 
@@ -217,6 +217,7 @@ const FarmingAddButton = (props) => {
         const library = new ethers.providers.Web3Provider(provider);
         const accounts = await library.listAccounts();
         const network = await library.getNetwork();
+        
         setProvider(provider);
         setLibrary(library);
         if (accounts) setAccount(accounts[0]);
@@ -369,8 +370,9 @@ const FarmingAddButton = (props) => {
                         _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
                         px={15} borderRadius={40}
                         onClick={() => {
-                          setOverlay(<OverlayTwo />)
-                          onOpen()
+                          setOverlay(<OverlayTwo />);
+                          onOpen();
+                          userInfo();
                         }}>
                       <b>+</b>
                       </Button>

@@ -36,14 +36,20 @@ const StakingBox = () => {
         "function balanceOf(address account) public view returns (uint256)",
         "function decimals() public view returns (uint8)"];
 
-        const connectedContract = new ethers.Contract(stakeTokenAddress, abi, iProvider);
+        const connectedContract = new ethers.Contract(ethers.utils.getAddress(stakeTokenAddress), abi, iProvider);
         let _decimals = await connectedContract.decimals();
         let _userBalance = await connectedContract.balanceOf(account);
         setUserBalance((_userBalance / 10 ** _decimals).toLocaleString());
   };
 
+  useEffect(() => {
+    userInfo();
+  }, [])
+  
+
   
   async function connectWallet() {
+
       if (typeof window !== 'undefined'){
       try {
           const web3Modal = new Web3Modal({
@@ -125,14 +131,12 @@ async function verifyMessage() {
 };
 
 function refreshState() {
-    
   setAccount();
   setChainId();
   setNetwork("");
   setMessage("");
   setSignature("");
   setVerified(undefined);
- 
 };
 
 async function disconnect() {
@@ -187,7 +191,7 @@ useEffect(() => {
 }, [provider]);
 
 useEffect(() => {
-  userInfo();
+
   if (window.ethereum){
     setProvider(new ethers.providers.Web3Provider(window.ethereum))
   } else {
