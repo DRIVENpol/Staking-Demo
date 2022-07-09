@@ -12,13 +12,15 @@ import { Input, Button, Text, Box,
     ModalHeader,
     ModalFooter,
     ModalBody,
-    ModalCloseButton, useDisclosure, InputLeftAddon, InputGroup } from '@chakra-ui/react';
+    ModalCloseButton, useDisclosure, InputLeftAddon, InputGroup,
+    useToast } from '@chakra-ui/react';
   
 
 const FarmingAddButton = (props) => {
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
   
+  const toast = useToast();
 
   const mainScAddress = "0x5F787db64B1313B981579A02673559f292f552DB";
   const stakeTokenAddress = "0xe278058F6598F712095DA268367f267F9E250D4A";
@@ -50,6 +52,8 @@ const FarmingAddButton = (props) => {
 
   const [overlay, setOverlay] = React.useState(<OverlayTwo />)
 
+  const [farmingLoading, setFarmingLoading] = useState(false);
+
   // ======= FARM  =======
   const startFarming = async () => {
     if (typeof window !== 'undefined'){
@@ -64,18 +68,26 @@ const FarmingAddButton = (props) => {
 
         const abi = ["function approve(address spender, uint256 amount) public returns (bool)",
         "function balanceOf(address account) public view returns (uint256)",
-      "function deposit(uint256 _amount) external"];
+        "function deposit(uint256 _amount) external"];
         
         const connectedContract = new ethers.Contract(mainScAddress, abi, signer);
 
-        let _isApproved = await connectedContract.deposit((tAmount * 10 ** 18).toString(), {gasLimit:6000000});
+        let _farming = await connectedContract.deposit((tAmount * 10 ** 18).toString(), {gasLimit:6000000});
         
 
-        setIsLoadingApprove(true);
-        await _isApproved.wait();
+        setFarmingLoading(true);
+        await _farming.wait();
+        setFarmingLoading(false);
         onClose();
-        setIsLoadingApprove(false);
+        toast({
+          title: 'Congrats!',
+          description: `You staked ${tAmount} DVX.`,
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        });
         allowanceErc20();
+        userInfo();
 
 
 
@@ -419,6 +431,19 @@ const FarmingAddButton = (props) => {
           
           </>
          ) : (<>
+         {farmingLoading ? (<>
+          <Button
+              isLoading
+              loadingText='Farming...'
+              variant={'solid'}
+              size='md'
+              bgGradient='linear(to-l, #7928CA, #FF0080)'
+              color='white'
+              _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
+               borderRadius={20}>
+            Start Farming
+            </Button>
+         </>): (<>
           <Button
               onClick={startFarming}
               variant={'solid'}
@@ -429,6 +454,8 @@ const FarmingAddButton = (props) => {
                borderRadius={20}>
             Start Farming
             </Button>
+         </>)}
+          
          </>)}
          
            
