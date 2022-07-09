@@ -79,7 +79,7 @@ const FarmingAddButton = (props) => {
         // console.log("==== APPROVED: " + fAmount + " ====");
         setErcApprove(fAmount);
 
-        // console.log("==== ERC20 APPROVE: " + ercApprove + " ====");
+        // console.log("==== ERC20 APPROVE: " + _isApproved + " ====");
 
 
         // setIsLoading(true);
@@ -124,9 +124,12 @@ const FarmingAddButton = (props) => {
 
         let _decimals = await connectedContract.decimals();
         let _tAmount = tAmount * 10 ** _decimals;
+
         console.log("==== TO APPROVE: " + _tAmount);
         console.log("==== try");
+
         let _isApproved = await connectedContract.approve(mainScAddress, _tAmount.toString(), {gasLimit:6000000});
+        
         console.log("==== success!");
         console.log("==== approved: " + _isApproved);
 
@@ -341,6 +344,7 @@ const FarmingAddButton = (props) => {
               <InputLeftAddon bgColor={'#15234a'}>DVX-BNB LP</InputLeftAddon>
               <Input
               onChange={(event) => {
+                // console.log("EVENT ==== " + event.target.value)
                 setTAmount(event.target.value);
                 allowanceErc20();
                 // console.log("==== APPROVED: " + ercApprove + " ====");
