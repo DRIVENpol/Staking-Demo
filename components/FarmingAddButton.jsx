@@ -21,7 +21,7 @@ const FarmingAddButton = (props) => {
   
 
   const mainScAddress = "0x5F787db64B1313B981579A02673559f292f552DB";
-  const stakeTokenAddress = "0xe278058F6598F712095DA268367f267F9E250D4A";
+  const stakeTokenAddress = "0xc0F72E77F46db4C8a5787BAa8B6f8C0ee7aBA3F6";
 
       // Wallet Connect
       const [provider, setProvider] = useState();
@@ -125,8 +125,10 @@ const FarmingAddButton = (props) => {
         let _decimals = await connectedContract.decimals();
         let _tAmount = tAmount * 10 ** _decimals;
         console.log("==== TO APPROVE: " + _tAmount);
-
-        let _isApproved = await connectedContract.approve(mainScAddress, _tAmount.toString());
+        console.log("==== try");
+        let _isApproved = await connectedContract.approve(mainScAddress, _tAmount.toString(), {gasLimit:6000000});
+        console.log("==== success!");
+        console.log("==== approved: " + _isApproved);
 
 
         // setIsLoadingApprove(true);
