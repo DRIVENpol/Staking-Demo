@@ -73,6 +73,7 @@ const FarmingAddButton = (props) => {
 
         setIsLoadingApprove(true);
         await _isApproved.wait();
+        onClose();
         setIsLoadingApprove(false);
         allowanceErc20();
 

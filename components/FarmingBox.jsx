@@ -11,14 +11,8 @@ import { providerOptions } from "../Utils/providerOptions";
 
 const StakingBox = () => {
 
-  // const mainScAddress = "0x5F787db64B1313B981579A02673559f292f552DB";
-  // const stakeTokenAddress = "0xe278058F6598F712095DA268367f267F9E250D4A";
-
-  const [isApproved, setIsApproved] = useState(false);
-  // const [approvedAmount, setApprovedAmount] = useState(0);
-
-  const [userBalance, setUserBalance] = useState(0);
-  const [toStake, setToStake] = useState(0);
+  const mainScAddress = "0x5F787db64B1313B981579A02673559f292f552DB";
+  const stakeTokenAddress = "0xe278058F6598F712095DA268367f267F9E250D4A";
 
   const [provider, setProvider] = useState();
   const [library, setLibrary] = useState();
@@ -33,22 +27,20 @@ const StakingBox = () => {
 
 
 
-  // async function checkApproved() {
-  //   const abi =["function balanceOf(address account) public view returns (uint256)",
-  //   "function allowance(address owner, address spender) public view returns (uint256)"];
+  const [userBalance, setUserBalance] = useState('');
 
-  //   const connectedContract = new ethers.Contract(stakeTokenAddress, abi, provider);
+  const userInfo = async () => {
+    const iProvider = new ethers.providers.JsonRpcProvider("https://eth-rinkeby.alchemyapi.io/v2/qSQowMkVnht5prnNyhu9DF8w-oBdrcww");
 
-  //   let _userBalance = await connectedContract.balanceOf(account);
-  //   let _allowedBalance = await connectedContract.allowance(account, mainScAddress);
-  //   setUserBalance(Number(_userBalance));
+        const abi = [
+        "function balanceOf(address account) public view returns (uint256)",
+        "function decimals() public view returns (uint8)"];
 
-  //   if (_allowedBalance > toStake * 10 ** 18) {
-  //     setIsApproved(true);
-  //     console.log(true);
-  //   }
-  // }
-  
+        const connectedContract = new ethers.Contract(stakeTokenAddress, abi, iProvider);
+        let _decimals = await connectedContract.decimals();
+        let _userBalance = await connectedContract.balanceOf(account);
+        setUserBalance((_userBalance / 10 ** _decimals).toLocaleString());
+  };
 
   
   async function connectWallet() {
@@ -195,6 +187,7 @@ useEffect(() => {
 }, [provider]);
 
 useEffect(() => {
+  userInfo();
   if (window.ethereum){
     setProvider(new ethers.providers.Web3Provider(window.ethereum))
   } else {
@@ -263,7 +256,7 @@ useEffect(() => {
                       <Box p='5' bgColor={'#132144'} borderRadius='12'>
                       <HStack>
                         <Text color='white'><b>Amount In Wallet</b></Text>
-                        <Text align='right' color='white' flex='1'>267,123 DVX</Text>
+                        <Text align='right' color='white' flex='1'>{userBalance.toLocaleString()} DVX</Text>
                         </HStack>
                         </Box>
                       </GridItem>
