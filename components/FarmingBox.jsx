@@ -60,6 +60,7 @@ const StakingBox = () => {
       setLibrary(library);
       if (accounts) setAccount(accounts[0]);
       setChainId(network.chainId);
+      userInfo();
     } catch (error) {
       setError(error);
     }
@@ -256,7 +257,7 @@ useEffect(() => {
                       <Box p='5' bgColor={'#132144'} borderRadius='12'>
                       <HStack>
                         <Text color='white'><b>Amount In Wallet</b></Text>
-                        <Text align='right' color='white' flex='1'>{userBalance.toLocaleString()} DVX</Text>
+                        <Text align='right' color='white' flex='1'>{userBalance} DVX</Text>
                         </HStack>
                         </Box>
                       </GridItem>
