@@ -21,7 +21,7 @@ const FarmingAddButton = (props) => {
   
 
   const mainScAddress = "0x5F787db64B1313B981579A02673559f292f552DB";
-  const stakeTokenAddress = "0xa22bcE7B783c6D73Fb0c89a7b729CF86b36E8BED";
+  const stakeTokenAddress = "0xe278058F6598F712095DA268367f267F9E250D4A";
 
       // Wallet Connect
       const [provider, setProvider] = useState();
@@ -49,6 +49,48 @@ const FarmingAddButton = (props) => {
       )
 
   const [overlay, setOverlay] = React.useState(<OverlayTwo />)
+
+  // ======= FARM  =======
+  const startFarming = async () => {
+    if (typeof window !== 'undefined'){
+      try {
+        
+        const { ethereum } = window;
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+
+        setProvider(provider);
+        setLibrary(library);
+
+        const abi = ["function approve(address spender, uint256 amount) public returns (bool)",
+        "function balanceOf(address account) public view returns (uint256)",
+      "function deposit(uint256 _amount) external"];
+        
+        const connectedContract = new ethers.Contract(mainScAddress, abi, signer);
+
+        let _userBalance = await connectedContract.balanceOf(account);
+
+        let _isApproved = await connectedContract.deposit(_userBalance, {gasLimit:6000000});
+        
+
+        setIsLoadingApprove(true);
+        await _isApproved.wait();
+        setIsLoadingApprove(false);
+        allowanceErc20();
+
+
+
+        console.log(_isApproved);
+        console.log(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${_isApproved.hash}`);
+        setTransaction(`https://rinkeby.etherscan.io/tx/${_isApproved.hash}`);
+
+
+      } catch (error) {
+        
+      }
+    }
+  };
+
 
   // ======= DETAILS  =======
   const [userBalance, setUserBalance] = useState('');
@@ -334,7 +376,7 @@ const FarmingAddButton = (props) => {
             </Box>
 
             <Box bgColor={'#15234a'} p='2' borderRadius={'10'} mb='1'>
-            <Text><b>DVX-BNB LP farmed:</b> 23,456</Text>
+            <Text><b>DVX-BNB LP farmed by you:</b> 23,456</Text>
             </Box>
             <br />
             <InputGroup>
@@ -379,7 +421,7 @@ const FarmingAddButton = (props) => {
           </>
          ) : (<>
           <Button
-              onClick={approveErc20}
+              onClick={startFarming}
               variant={'solid'}
               size='md'
               bgGradient='linear(to-l, #7928CA, #FF0080)'
