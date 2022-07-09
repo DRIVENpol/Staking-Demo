@@ -60,7 +60,6 @@ const StakingBox = () => {
       setLibrary(library);
       if (accounts) setAccount(accounts[0]);
       setChainId(network.chainId);
-      userInfo();
     } catch (error) {
       setError(error);
     }
