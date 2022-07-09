@@ -60,7 +60,6 @@ const StakingBox = () => {
       setLibrary(library);
       if (accounts) setAccount(accounts[0]);
       setChainId(network.chainId);
-      userInfo();
     } catch (error) {
       setError(error);
     }
@@ -188,7 +187,6 @@ useEffect(() => {
 }, [provider]);
 
 useEffect(() => {
-  userInfo();
   if (window.ethereum){
     setProvider(new ethers.providers.Web3Provider(window.ethereum))
   } else {
