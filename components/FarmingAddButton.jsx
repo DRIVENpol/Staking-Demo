@@ -5,6 +5,7 @@ import { BigNumber, ethers } from "ethers";
 import Web3Modal from "web3modal";
 import { providerOptions } from "../Utils/providerOptions";
 
+
 import { Input, Button, Text, Box, 
     Modal,
     ModalOverlay,
@@ -23,7 +24,7 @@ const FarmingAddButton = (props) => {
   
   const toast = useToast();
 
-  const mainScAddress = "0x68AFE40F3FDAeab16bC035873A445dBf5844379b";
+  const mainScAddress = "0x8F5CD5e1A45F0111789848e59778D885C7d52690";
   const stakeTokenAddress = "0xe278058F6598F712095DA268367f267F9E250D4A";
 
       // Wallet Connect
@@ -72,7 +73,9 @@ const FarmingAddButton = (props) => {
         
         const connectedContract = new ethers.Contract(mainScAddress, abi, signer);
 
-        let _farming = await connectedContract.deposit((Number(tAmount * 10 ** 18)).toString(), {gasLimit:6000000});
+        let convertedBN = BigNumber.from(tAmount);
+        // (tAmount * 10 ** 18);
+        let _farming = await connectedContract.deposit(convertedBN, {gasLimit:6000000});
         
         
         setFarmingLoading(true);
@@ -349,6 +352,7 @@ const FarmingAddButton = (props) => {
               <Input type='number' placeholder='Amount To Farm'
               onChange={(event) => {
                 setTAmount(event.target.value);
+                console.log("Normal: " + (event.target.value * 10 ** 18).toString());
                 }} />
             </InputGroup>
           </ModalBody>
