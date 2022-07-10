@@ -9,7 +9,7 @@ import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import { providerOptions } from "../Utils/providerOptions";
 
-const StakingBox = () => {
+const FarmingBox = () => {
 
   const mainScAddress = "0x5F787db64B1313B981579A02673559f292f552DB";
   const stakeTokenAddress = "0xe278058F6598F712095DA268367f267F9E250D4A";
@@ -40,7 +40,45 @@ const StakingBox = () => {
         let _decimals = await connectedContract.decimals();
         let _userBalance = await connectedContract.balanceOf(account);
         setUserBalance((_userBalance / 10 ** _decimals).toLocaleString());
+
+        localStorage.setItem('userBalance', (_userBalance / 10 ** _decimals).toLocaleString());
   };
+
+    // ======= APPROVE  =======
+    const [ercApprove, setErcApprove] = useState(0);
+
+    const allowanceErc20 = async () => {
+      if (typeof window !== 'undefined'){
+        try {
+          
+          const { ethereum } = window;
+          const provider = new ethers.providers.Web3Provider(ethereum);
+  
+  
+          setProvider(provider);
+          setLibrary(library);
+  
+          const abi = [
+          "function allowance(address owner, address spender) public view returns (uint256)",
+          "function decimals() public view returns (uint8)"];
+  
+          const connectedContract = new ethers.Contract(stakeTokenAddress, abi, provider);
+  
+          let _decimals = await connectedContract.decimals();
+          
+          let _isApproved = await connectedContract.allowance(account, mainScAddress);
+  
+          let fAmount = _isApproved / 10 ** _decimals;
+  
+          setErcApprove(fAmount);
+          localStorage.setItem('ercApprove', fAmount);
+
+  
+        } catch (error) {
+          
+        }
+      }
+    };
 
   
   async function connectWallet() {
@@ -60,6 +98,8 @@ const StakingBox = () => {
       setLibrary(library);
       if (accounts) setAccount(accounts[0]);
       setChainId(network.chainId);
+      userInfo();
+      allowanceErc20();
     } catch (error) {
       setError(error);
     }
@@ -256,7 +296,7 @@ useEffect(() => {
                       <Box p='5' bgColor={'#132144'} borderRadius='12'>
                       <HStack>
                         <Text color='white'><b>Amount In Wallet</b></Text>
-                        <Text align='right' color='white' flex='1'>{userBalance} DVX</Text>
+                        <Text align='right' color='white' flex='1'>{localStorage.getItem('userBalance')} DVX</Text>
                         </HStack>
                         </Box>
                       </GridItem>
@@ -283,7 +323,12 @@ useEffect(() => {
                       <Box p='5' bgColor={'#132144'} borderRadius='12'>
                       <HStack>
                       <Text color='white'><b>Farm</b></Text>
-                      <FarmingAddButton acc={account} pv={provider} />
+                      <FarmingAddButton 
+                      ub={localStorage.getItem('userBalance')} 
+                      ui={userInfo} 
+                      allowanceFunction={allowanceErc20}
+                      allowance={localStorage.getItem('ercApprove')}
+                      />
                         </HStack>
                         </Box>
                       </GridItem>
@@ -306,4 +351,4 @@ useEffect(() => {
   )
 }
 
-export default StakingBox
+export default FarmingBox

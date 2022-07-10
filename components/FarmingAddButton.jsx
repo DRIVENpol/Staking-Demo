@@ -13,7 +13,8 @@ import { Input, Button, Text, Box,
     ModalFooter,
     ModalBody,
     ModalCloseButton, useDisclosure, InputLeftAddon, InputGroup,
-    useToast } from '@chakra-ui/react';
+    useToast, 
+    Link} from '@chakra-ui/react';
   
 
 const FarmingAddButton = (props) => {
@@ -74,7 +75,7 @@ const FarmingAddButton = (props) => {
 
         let _farming = await connectedContract.deposit((tAmount * 10 ** 18).toString(), {gasLimit:6000000});
         
-
+        
         setFarmingLoading(true);
         await _farming.wait();
         setFarmingLoading(false);
@@ -87,13 +88,13 @@ const FarmingAddButton = (props) => {
           isClosable: true,
         });
         allowanceErc20();
-        userInfo();
+        props.ui();
 
 
 
-        console.log(_isApproved);
-        console.log(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${_isApproved.hash}`);
-        setTransaction(`https://rinkeby.etherscan.io/tx/${_isApproved.hash}`);
+        console.log(_farming);
+        console.log(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${_farming.hash}`);
+        setTransaction(`https://rinkeby.etherscan.io/tx/${_farming.hash}`);
 
 
       } catch (error) {
@@ -103,60 +104,11 @@ const FarmingAddButton = (props) => {
   };
 
 
-  // ======= DETAILS  =======
-  const [userBalance, setUserBalance] = useState('');
 
-  const userInfo = async () => {
-    const iProvider = new ethers.providers.JsonRpcProvider("https://eth-rinkeby.alchemyapi.io/v2/qSQowMkVnht5prnNyhu9DF8w-oBdrcww");
-
-        const abi = [
-        "function balanceOf(address account) public view returns (uint256)",
-        "function decimals() public view returns (uint8)"];
-
-        const connectedContract = new ethers.Contract(stakeTokenAddress, abi, iProvider);
-        let _decimals = await connectedContract.decimals();
-        let _userBalance = await connectedContract.balanceOf(account);
-        setUserBalance((_userBalance / 10 ** _decimals).toLocaleString());
-  };
-
-
-  // ======= APPROVE  =======
-  const [ercApprove, setErcApprove] = useState(0);
-
-  const allowanceErc20 = async () => {
-    if (typeof window !== 'undefined'){
-      try {
-        
-        const { ethereum } = window;
-        const provider = new ethers.providers.Web3Provider(ethereum);
-
-
-        setProvider(provider);
-        setLibrary(library);
-
-        const abi = [
-        "function allowance(address owner, address spender) public view returns (uint256)",
-        "function decimals() public view returns (uint8)"];
-
-        const connectedContract = new ethers.Contract(stakeTokenAddress, abi, provider);
-
-        let _decimals = await connectedContract.decimals();
-        
-        let _isApproved = await connectedContract.allowance(account, mainScAddress);
-
-        let fAmount = _isApproved / 10 ** _decimals;
-
-        setErcApprove(fAmount);
-
-      } catch (error) {
-        
-      }
-    }
-  };
 
   useEffect(() => {
-    allowanceErc20();
-    userInfo();
+    props.allowanceFunction();
+    props.ui();
   }, [])
   
 
@@ -383,7 +335,7 @@ const FarmingAddButton = (props) => {
           <ModalCloseButton />
           <ModalBody>
           <Box bgColor={'#15234a'} p='2' borderRadius={'10'} mb='1'>
-            <Text><b>DVX-BNB LP in your wallet:</b> {userBalance}</Text>
+            <Text><b>DVX-BNB LP in your wallet:</b> {props.ub}</Text>
             </Box>
 
             <Box bgColor={'#15234a'} p='2' borderRadius={'10'} mb='1'>
@@ -400,7 +352,7 @@ const FarmingAddButton = (props) => {
           </ModalBody>
           <ModalFooter>
 
-         {ercApprove < tAmount ? (
+         {props.allowance < tAmount ? (
           <>
           { !isLoadingApprove ? (<>
             <Button
