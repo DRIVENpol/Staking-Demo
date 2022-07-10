@@ -12,7 +12,7 @@ import AnalyticsFarming from '../components/AnalyticsFarming';
 
 const Staking = () => {
 
-  const mainScAddress = "0x5F787db64B1313B981579A02673559f292f552DB";
+  const mainScAddress = "0xBCc8431d326fcF34De49822ABd074Eb7eff3c967";
 
   const tokenPrice = 2.476;
 
@@ -26,18 +26,19 @@ const Staking = () => {
    const getPoolDetails = async () => {
     const iProvider = new ethers.providers.JsonRpcProvider("https://eth-rinkeby.alchemyapi.io/v2/qSQowMkVnht5prnNyhu9DF8w-oBdrcww");
 
-    const abi = ["function getOwner() public view returns(address)",
-    "function getActiveStakers() public view returns(uint256)",
-    "function getTotalTokensStaked() public view returns(uint256)",
-    "function getTotalGivenRewards() public view returns(uint256)"
+    const abi = [
+      "function getActiveStakers() external view returns(uint256)",
+      "function getSmartContractOwner() external view returns(address)",
+      "function getTotalStakedTokens() external view returns(uint256)",
+      "function getTotalRedistributedRewards() external view returns(uint256)"
     ];
 
     const connectedContract = new ethers.Contract(mainScAddress, abi, iProvider);
 
-    let _owner = await connectedContract.getOwner();
+    let _owner = await connectedContract.getSmartContractOwner();
     let _stakers = await connectedContract.getActiveStakers();
-    let _stakedTokens = await connectedContract.getTotalTokensStaked();
-    let _givenRewards = await connectedContract.getTotalGivenRewards();
+    let _stakedTokens = await connectedContract.getTotalStakedTokens();
+    let _givenRewards = await connectedContract.getTotalRedistributedRewards();
 
     let _tvlConverted = Number(_stakedTokens);
     let _tvlWithoutDecimals = _tvlConverted / 10 ** 18;
