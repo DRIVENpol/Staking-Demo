@@ -67,8 +67,7 @@ const FarmingAddButton = (props) => {
         setProvider(provider);
         setLibrary(library);
 
-        const abi = ["function approve(address spender, uint256 amount) public returns (bool)",
-        "function balanceOf(address account) public view returns (uint256)",
+        const abi = [
         "function deposit(uint256 _amount) external"];
         
         const connectedContract = new ethers.Contract(mainScAddress, abi, signer);

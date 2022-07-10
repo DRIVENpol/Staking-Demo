@@ -5,29 +5,27 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-import "./library/IBEP20.sol";
-import "./library/SafeBEP20.sol";
+import "library/IBEP20.sol";
+import "library/SafeBEP20.sol";
 
 contract SmartChef is Ownable, ReentrancyGuard {
     using SafeMath for uint256;
     using SafeBEP20 for IBEP20;
 
+    // Variables for active stakers
+    uint256 public activeStakers;
+    mapping (address => bool) public isStaker;
+
     // Whether a limit is set for users
     bool public hasUserLimit;
-
-    // Active stakers
-    uint256 public poolActiveStakers;
-
-    // Totall Given Rewards
-    uint256 public totalGivenRewards;
 
     // Accrued token per share
     uint256 public accTokenPerShare;
 
-    // The block number when CAKE mining ends.
+    // The block number when ERC20 mining ends.
     uint256 public bonusEndBlock;
 
-    // The block number when CAKE mining starts.
+    // The block number when ERC20 mining starts.
     uint256 public startBlock;
 
     // The block number of the last pool update
@@ -36,7 +34,7 @@ contract SmartChef is Ownable, ReentrancyGuard {
     // The pool limit (0 if none)
     uint256 public poolLimitPerUser;
 
-    // CAKE tokens created per block.
+    // ERC20 tokens created per block.
     uint256 public rewardPerBlock;
 
     // The precision factor
@@ -105,8 +103,7 @@ contract SmartChef is Ownable, ReentrancyGuard {
         // Set the lastRewardBlock as the startBlock
         lastRewardBlock = startBlock;
 
-        poolActiveStakers = 0;
-        totalGivenRewards = 0;
+        activeStakers = 0;
     }
 
     /*
@@ -116,17 +113,22 @@ contract SmartChef is Ownable, ReentrancyGuard {
     function deposit(uint256 _amount) external nonReentrant {
         UserInfo storage user = userInfo[msg.sender];
 
+
         if (hasUserLimit) {
             require(_amount.add(user.amount) <= poolLimitPerUser, "User amount above limit");
         }
 
         _updatePool();
 
+        if(isStaker[msg.sender] == false) {
+            isStaker[msg.sender] = true;
+            activeStakers = activeStakers.add(1);
+        }
+
         if (user.amount > 0) {
             uint256 pending = user.amount.mul(accTokenPerShare).div(PRECISION_FACTOR).sub(user.rewardDebt);
             if (pending > 0) {
                 rewardToken.safeTransfer(address(msg.sender), pending);
-                totalGivenRewards = totalGivenRewards.add(pending);
             }
         }
 
@@ -136,7 +138,6 @@ contract SmartChef is Ownable, ReentrancyGuard {
         }
 
         user.rewardDebt = user.amount.mul(accTokenPerShare).div(PRECISION_FACTOR);
-        poolActiveStakers = poolActiveStakers.add(1);
 
         emit Deposit(msg.sender, _amount);
     }
@@ -156,10 +157,6 @@ contract SmartChef is Ownable, ReentrancyGuard {
         if (_amount > 0) {
             user.amount = user.amount.sub(_amount);
             stakedToken.safeTransfer(address(msg.sender), _amount);
-
-            if (user.amount == 0) {
-                poolActiveStakers = poolActiveStakers.sub(1);
-            }
         }
 
         if (pending > 0) {
@@ -168,6 +165,10 @@ contract SmartChef is Ownable, ReentrancyGuard {
 
         user.rewardDebt = user.amount.mul(accTokenPerShare).div(PRECISION_FACTOR);
 
+        if(user.amount == 0) {
+            isStaker[msg.sender] = false;
+            activeStakers = activeStakers.sub(1);
+        }
 
         emit Withdraw(msg.sender, _amount);
     }
@@ -182,12 +183,12 @@ contract SmartChef is Ownable, ReentrancyGuard {
         user.amount = 0;
         user.rewardDebt = 0;
 
+        isStaker[msg.sender] = false;
+        activeStakers = activeStakers.sub(1);
+
         if (amountToTransfer > 0) {
             stakedToken.safeTransfer(address(msg.sender), amountToTransfer);
         }
-
-        poolActiveStakers = poolActiveStakers.sub(1);
-
 
         emit EmergencyWithdraw(msg.sender, user.amount);
     }
@@ -282,9 +283,9 @@ contract SmartChef is Ownable, ReentrancyGuard {
         uint256 stakedTokenSupply = stakedToken.balanceOf(address(this));
         if (block.number > lastRewardBlock && stakedTokenSupply != 0) {
             uint256 multiplier = _getMultiplier(lastRewardBlock, block.number);
-            uint256 cakeReward = multiplier.mul(rewardPerBlock);
+            uint256 tokenReward = multiplier.mul(rewardPerBlock);
             uint256 adjustedTokenPerShare = accTokenPerShare.add(
-                cakeReward.mul(PRECISION_FACTOR).div(stakedTokenSupply)
+                tokenReward.mul(PRECISION_FACTOR).div(stakedTokenSupply)
             );
             return user.amount.mul(adjustedTokenPerShare).div(PRECISION_FACTOR).sub(user.rewardDebt);
         } else {
@@ -308,8 +309,8 @@ contract SmartChef is Ownable, ReentrancyGuard {
         }
 
         uint256 multiplier = _getMultiplier(lastRewardBlock, block.number);
-        uint256 cakeReward = multiplier.mul(rewardPerBlock);
-        accTokenPerShare = accTokenPerShare.add(cakeReward.mul(PRECISION_FACTOR).div(stakedTokenSupply));
+        uint256 tokenReward = multiplier.mul(rewardPerBlock);
+        accTokenPerShare = accTokenPerShare.add(tokenReward.mul(PRECISION_FACTOR).div(stakedTokenSupply));
         lastRewardBlock = block.number;
     }
 
@@ -329,22 +330,18 @@ contract SmartChef is Ownable, ReentrancyGuard {
     }
 
     // Getters
-    function getOwner() public view returns(address) {
-        address _ownerAddr = owner();
-        return _ownerAddr;
+    function getActiveStakers() external view returns(uint256) {
+        return activeStakers;
     }
 
-    function getActiveStakers() public view returns(uint256) {
-        return poolActiveStakers;
+    function getSmartContractOwner() external view returns(address) {
+        address _o = owner();
+        return _o;
     }
 
-    function getTotalTokensStaked() public view returns(uint256) {
-        uint256 _b = stakedToken.balanceOf(address(this));
-        return _b;
-    }
+    function getStakedAmountByUser(address _who) external view returns(uint256) {
+        UserInfo storage user = userInfo[_who];
 
-    function getTotalGivenRewards() public view returns(uint256) {
-        uint256 _r = totalGivenRewards;
-        return _r;
+        return user.amount;
     }
 }
