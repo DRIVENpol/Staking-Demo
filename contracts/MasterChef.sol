@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.0;
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-import "library/IBEP20.sol";
-import "library/SafeBEP20.sol";
+import "./library/IBEP20.sol";
+import "./library/SafeBEP20.sol";
 
 contract SmartChef is Ownable, ReentrancyGuard {
     using SafeMath for uint256;

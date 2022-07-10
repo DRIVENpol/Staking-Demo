@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { networkParams } from "../Utils/Networks";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import { providerOptions } from "../Utils/providerOptions";
 
@@ -18,7 +18,6 @@ import { Input, Button, Text, Box,
   
 
 const FarmingAddButton = (props) => {
-
   const { isOpen, onOpen, onClose } = useDisclosure();
   
   const toast = useToast();
@@ -63,18 +62,27 @@ const FarmingAddButton = (props) => {
         const { ethereum } = window;
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
+        const account = await signer.getAddress();
 
         setProvider(provider);
         setLibrary(library);
 
-        const abi = [
-        "function deposit(uint256 _amount) external"];
         
+        const abi = ["function deposit(uint256 _amount) external"];
         const connectedContract = new ethers.Contract(mainScAddress, abi, signer);
 
-        let _farming = await connectedContract.deposit((Number(tAmount * 10 ** 18)).toString(), {gasLimit:6000000});
-        
-        
+        //TODO: decimals!
+        tAmount = 5;
+        const tAmountBN = ethers.BigNumber.from( tAmount.toString() )
+          .mul(
+            ethers.BigNumber.from( '10' )
+              .pow( ethers.BigNumber.from( '18' ))
+          );
+
+console.info({ tAmountBN: tAmountBN.toString() });
+        const gasLimit = await connectedContract.estimateGas.deposit( tAmountBN.toString(), { from: account });
+        let _farming = await connectedContract.deposit( tAmountBN.toString(), { from: account, gasLimit: gasLimit.toString() });
+
         setFarmingLoading(true);
         await _farming.wait();
         setFarmingLoading(false);
@@ -96,11 +104,12 @@ const FarmingAddButton = (props) => {
 
         console.log(_farming);
         console.log(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${_farming.hash}`);
-        setTransaction(`https://rinkeby.etherscan.io/tx/${_farming.hash}`);
-
-
-      } catch (error) {
-        
+        //setTransaction(`https://rinkeby.etherscan.io/tx/${_farming.hash}`);
+      } catch (err) {
+console.warn({ err });
+        if( err?.error?.data?.message ){
+          window.alert( err.error.data.message );
+        }
       }
     }
   };
@@ -120,22 +129,25 @@ const FarmingAddButton = (props) => {
   const approveErc20 = async () => {
     if (typeof window !== 'undefined'){
       try {
-        
-        const { ethereum } = window;
-        const provider = new ethers.providers.Web3Provider(ethereum);
+        const provider = new ethers.providers.Web3Provider( window.ethereum );
         const signer = provider.getSigner();
+        const account = await signer.getAddress();
 
         setProvider(provider);
         setLibrary(library);
 
-        const abi = ["function approve(address spender, uint256 amount) public returns (bool)",
-        "function balanceOf(address account) public view returns (uint256)"];
-        
+        const abi = [
+          "function approve(address spender, uint256 amount) public returns (bool)",
+          "function balanceOf(address account) public view returns (uint256)"
+        ];
+
+
         const connectedContract = new ethers.Contract(stakeTokenAddress, abi, signer);
 
+        //already BN
         let _userBalance = await connectedContract.balanceOf(account);
-
-        let _isApproved = await connectedContract.approve(mainScAddress, _userBalance, {gasLimit:6000000});
+        const gasLimitBN = await connectedContract.estimateGas.approve(mainScAddress, _userBalance.toString(), { from: account });
+        let _isApproved = await connectedContract.approve(mainScAddress, _userBalance.toString(), { from: account, gasLimit: gasLimitBN.toString() });
         
 
         setIsLoadingApprove(true);
@@ -144,14 +156,11 @@ const FarmingAddButton = (props) => {
         props.allowanceFunction()
 
 
-
         console.log(_isApproved);
         console.log(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${_isApproved.hash}`);
-        setTransaction(`https://rinkeby.etherscan.io/tx/${_isApproved.hash}`);
-
-
-      } catch (error) {
-        
+        //setTransaction(`https://rinkeby.etherscan.io/tx/${_isApproved.hash}`);
+      } catch (err) {
+console.warn({ err });
       }
     }
   };
@@ -310,7 +319,10 @@ const FarmingAddButton = (props) => {
 }, []);
 
 
-      
+console.info({
+  'props.allowance': props.allowance,
+  'tAmount': tAmount
+});
 
   return (
    <>
@@ -347,9 +359,12 @@ const FarmingAddButton = (props) => {
             <InputGroup>
               <InputLeftAddon bgColor={'#15234a'}>DVX-BNB LP</InputLeftAddon>
               <Input type='number' placeholder='Amount To Farm'
-              onChange={(event) => {
-                setTAmount(event.target.value);
-                }} />
+              onChange={(evt) => {
+                if( evt.target.value && !isNaN( evt.target.value ) ){
+console.info( `setting ${evt.target.value}` );
+                  setTAmount(parseFloat( evt.target.value ));
+                }
+              }} />
             </InputGroup>
           </ModalBody>
           <ModalFooter>
@@ -406,7 +421,7 @@ const FarmingAddButton = (props) => {
               color='white'
               _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
                borderRadius={20}>
-            Start Farming
+              Start Farming
             </Button>
          </>)}
           
