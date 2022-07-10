@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { networkParams } from "../Utils/Networks";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import Web3Modal from "web3modal";
 import { providerOptions } from "../Utils/providerOptions";
 
@@ -23,7 +23,7 @@ const FarmingAddButton = (props) => {
   
   const toast = useToast();
 
-  const mainScAddress = "0xEf99eD28eF7440E99c36B178350638D59D77a86d";
+  const mainScAddress = "0x68AFE40F3FDAeab16bC035873A445dBf5844379b";
   const stakeTokenAddress = "0xe278058F6598F712095DA268367f267F9E250D4A";
 
       // Wallet Connect
@@ -72,7 +72,7 @@ const FarmingAddButton = (props) => {
         
         const connectedContract = new ethers.Contract(mainScAddress, abi, signer);
 
-        let _farming = await connectedContract.deposit((tAmount * 10 ** 18).toString(), {gasLimit:6000000});
+        let _farming = await connectedContract.deposit((Number(tAmount * 10 ** 18)).toString(), {gasLimit:6000000});
         
         
         setFarmingLoading(true);
@@ -141,7 +141,7 @@ const FarmingAddButton = (props) => {
         setIsLoadingApprove(true);
         await _isApproved.wait();
         setIsLoadingApprove(false);
-        allowanceErc20();
+        props.allowanceFunction()
 
 
 

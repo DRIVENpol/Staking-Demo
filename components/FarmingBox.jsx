@@ -11,7 +11,7 @@ import { providerOptions } from "../Utils/providerOptions";
 
 const FarmingBox = (props) => {
 
-  const mainScAddress = "0xEf99eD28eF7440E99c36B178350638D59D77a86d";
+  const mainScAddress = "0x68AFE40F3FDAeab16bC035873A445dBf5844379b";
   const stakeTokenAddress = "0xe278058F6598F712095DA268367f267F9E250D4A";
 
   const [provider, setProvider] = useState();
@@ -84,7 +84,7 @@ const FarmingBox = (props) => {
           let fAmount = _isApproved / 10 ** _decimals;
   
           setErcApprove(fAmount);
-          localStorage.setItem('ercApprove', fAmount);
+          localStorage.setItem('ercApprove', _isApproved.toString());
 
   
         } catch (error) {
