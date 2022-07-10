@@ -23,7 +23,7 @@ const FarmingAddButton = (props) => {
   
   const toast = useToast();
 
-  const mainScAddress = "0x3ED3A0201b96783e2923C523be2469896CB42772";
+  const mainScAddress = "0xEf99eD28eF7440E99c36B178350638D59D77a86d";
   const stakeTokenAddress = "0xe278058F6598F712095DA268367f267F9E250D4A";
 
       // Wallet Connect

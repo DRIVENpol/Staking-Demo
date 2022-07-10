@@ -11,7 +11,7 @@ import { providerOptions } from "../Utils/providerOptions";
 
 const FarmingBox = (props) => {
 
-  const mainScAddress = "0x3ED3A0201b96783e2923C523be2469896CB42772";
+  const mainScAddress = "0xEf99eD28eF7440E99c36B178350638D59D77a86d";
   const stakeTokenAddress = "0xe278058F6598F712095DA268367f267F9E250D4A";
 
   const [provider, setProvider] = useState();
@@ -37,7 +37,8 @@ const FarmingBox = (props) => {
         "function decimals() public view returns (uint8)"];
 
         const abi2 = [
-          "function getStakedAmountByUser(address _who) external view returns(uint256)"];
+          "function getStakedAmountByUser(address _who) external view returns(uint256)",
+        "function pendingReward(address _user) external view returns (uint256)"];
 
         const connectedContract = new ethers.Contract(stakeTokenAddress, abi, iProvider);
         const connectedContract2 = new ethers.Contract(mainScAddress, abi2, iProvider);
@@ -46,6 +47,9 @@ const FarmingBox = (props) => {
 
         let _stakedByUser = await connectedContract2.getStakedAmountByUser(account);
         localStorage.setItem('stakedByUser', (Number(_stakedByUser) / 10 ** _decimals).toLocaleString());
+
+        let _pendingRewards = await connectedContract2.pendingReward(account)
+        localStorage.setItem('pendingRewards', (_pendingRewards / 10 ** _decimals).toLocaleString());
 
         let _userBalance = await connectedContract.balanceOf(account);
         setUserBalance((_userBalance / 10 ** _decimals).toLocaleString());
@@ -295,7 +299,7 @@ useEffect(() => {
                       <Box p='5' bgColor={'#132144'} borderRadius='12'>
                       <HStack>
                         <Text color='white'><b>Pending Rewards</b></Text>
-                        <Text align='right' color='white' flex='1'>267,123 DVX</Text>
+                        <Text align='right' color='white' flex='1'>{localStorage.getItem('pendingRewards')} DVX</Text>
                         </HStack>
                         </Box>
                       </GridItem>
