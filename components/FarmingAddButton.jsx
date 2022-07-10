@@ -23,7 +23,7 @@ const FarmingAddButton = (props) => {
   
   const toast = useToast();
 
-  const mainScAddress = "0x111884E5D0472942a27CE4E80C2DA2cd3aba039f";
+  const mainScAddress = "0x3ED3A0201b96783e2923C523be2469896CB42772";
   const stakeTokenAddress = "0xe278058F6598F712095DA268367f267F9E250D4A";
 
       // Wallet Connect
@@ -78,6 +78,8 @@ const FarmingAddButton = (props) => {
         setFarmingLoading(true);
         await _farming.wait();
         setFarmingLoading(false);
+        props.ui();
+        props.poolDetails();
         onClose();
         toast({
           title: 'Congrats!',
@@ -86,8 +88,9 @@ const FarmingAddButton = (props) => {
           duration: 9000,
           isClosable: true,
         });
+
         allowanceErc20();
-        props.ui();
+
 
 
 
@@ -338,7 +341,7 @@ const FarmingAddButton = (props) => {
             </Box>
 
             <Box bgColor={'#15234a'} p='2' borderRadius={'10'} mb='1'>
-            <Text><b>DVX-BNB LP farmed by you:</b> 23,456</Text>
+            <Text><b>DVX-BNB LP farmed by you:</b> {props.sbu}</Text>
             </Box>
             <br />
             <InputGroup>

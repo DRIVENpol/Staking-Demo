@@ -9,9 +9,9 @@ import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import { providerOptions } from "../Utils/providerOptions";
 
-const FarmingBox = () => {
+const FarmingBox = (props) => {
 
-  const mainScAddress = "0x111884E5D0472942a27CE4E80C2DA2cd3aba039f";
+  const mainScAddress = "0x3ED3A0201b96783e2923C523be2469896CB42772";
   const stakeTokenAddress = "0xe278058F6598F712095DA268367f267F9E250D4A";
 
   const [provider, setProvider] = useState();
@@ -36,11 +36,20 @@ const FarmingBox = () => {
         "function balanceOf(address account) public view returns (uint256)",
         "function decimals() public view returns (uint8)"];
 
+        const abi2 = [
+          "function getStakedAmountByUser(address _who) external view returns(uint256)"];
+
         const connectedContract = new ethers.Contract(stakeTokenAddress, abi, iProvider);
+        const connectedContract2 = new ethers.Contract(mainScAddress, abi2, iProvider);
+
         let _decimals = await connectedContract.decimals();
+
+        let _stakedByUser = await connectedContract2.getStakedAmountByUser(account);
+        localStorage.setItem('stakedByUser', (Number(_stakedByUser) / 10 ** _decimals).toLocaleString());
+
         let _userBalance = await connectedContract.balanceOf(account);
         setUserBalance((_userBalance / 10 ** _decimals).toLocaleString());
-
+        
         localStorage.setItem('userBalance', (_userBalance / 10 ** _decimals).toLocaleString());
   };
 
@@ -306,7 +315,7 @@ useEffect(() => {
                       <Box p='5' bgColor={'#132144'} borderRadius='12'>
                       <HStack>
                         <Text color='white'><b>Staked Amount</b></Text>
-                        <Text align='right' color='white' flex='1'>267,123 DVX</Text>
+                        <Text align='right' color='white' flex='1'>{localStorage.getItem('stakedByUser')} DVX</Text>
                         </HStack>
                         </Box>
                       </GridItem>
@@ -324,10 +333,12 @@ useEffect(() => {
                       <HStack>
                       <Text color='white'><b>Farm</b></Text>
                       <FarmingAddButton 
-                      ub={localStorage.getItem('userBalance')} 
+                      ub={localStorage.getItem('userBalance')}
+                      sbu={localStorage.getItem('stakedByUser')} 
                       ui={userInfo} 
                       allowanceFunction={allowanceErc20}
                       allowance={localStorage.getItem('ercApprove')}
+                      poolDetails={props.poolDetails}
                       />
                         </HStack>
                         </Box>
