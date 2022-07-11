@@ -11,8 +11,8 @@ import { providerOptions } from "../Utils/providerOptions";
 
 const FarmingBox = (props) => {
 
-  const mainScAddress = "0xc213aACaFa928bb6A6AE9c5510d3D857136D0d29";
-  const stakeTokenAddress = "0x21a222aa273e4bC3e1665DB6ec7Db098B0EE5866";
+  const mainScAddress = "0x9B1BCeDdC90387c59Bb7F22c1070cE6A14E33749";
+  const stakeTokenAddress = "0xb52f3450195682F097070c119b90a32398EC7FdF";
 
   const [provider, setProvider] = useState();
   const [library, setLibrary] = useState();
