@@ -57,7 +57,6 @@ const FarmingBox = (props) => {
         localStorage.setItem('userBalance', (_userBalance / 10 ** _decimals).toLocaleString());
   };
 
-  setInterval(userInfo, 6000);
 
     // ======= APPROVE  =======
     const [ercApprove, setErcApprove] = useState(0);
