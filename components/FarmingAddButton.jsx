@@ -22,8 +22,8 @@ const FarmingAddButton = (props) => {
   
   const toast = useToast();
 
-  const mainScAddress = "0x95BC25259A682A041339Bd0D20eE6327dbC554AC";
-  const stakeTokenAddress = "0xe278058F6598F712095DA268367f267F9E250D4A";
+  const mainScAddress = "0x5C8aE5127CE5c5E6C1c675ffb2AC816B14FF57e5";
+  const stakeTokenAddress = "0xb52f3450195682F097070c119b90a32398EC7FdF";
 
       // Wallet Connect
       const [provider, setProvider] = useState();
@@ -97,7 +97,7 @@ const FarmingAddButton = (props) => {
           isClosable: true,
         });
 
-        allowanceErc20();
+        props.allowanceFunction();
 
 
 
@@ -366,7 +366,7 @@ console.info({
               <Input type='number' placeholder='Amount To Farm'
               onChange={(evt) => {
                 if( evt.target.value && !isNaN( evt.target.value ) ){
-console.info( `setting ${evt.target.value}` );
+                console.info( `setting ${evt.target.value}` );
                   setTAmount(parseFloat( evt.target.value ));
                 }
               }} />

@@ -11,8 +11,8 @@ import { providerOptions } from "../Utils/providerOptions";
 
 const FarmingBox = (props) => {
 
-  const mainScAddress = "0x95BC25259A682A041339Bd0D20eE6327dbC554AC";
-  const stakeTokenAddress = "0xe278058F6598F712095DA268367f267F9E250D4A";
+  const mainScAddress = "0x5C8aE5127CE5c5E6C1c675ffb2AC816B14FF57e5";
+  const stakeTokenAddress = "0xb52f3450195682F097070c119b90a32398EC7FdF";
 
   const [provider, setProvider] = useState();
   const [library, setLibrary] = useState();
@@ -56,6 +56,8 @@ const FarmingBox = (props) => {
         
         localStorage.setItem('userBalance', (_userBalance / 10 ** _decimals).toLocaleString());
   };
+
+  setInterval(userInfo, 6000);
 
     // ======= APPROVE  =======
     const [ercApprove, setErcApprove] = useState(0);
