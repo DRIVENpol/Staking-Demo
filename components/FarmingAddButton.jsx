@@ -22,7 +22,7 @@ const FarmingAddButton = (props) => {
   
   const toast = useToast();
 
-  const mainScAddress = "0x68AFE40F3FDAeab16bC035873A445dBf5844379b";
+  const mainScAddress = "0x95BC25259A682A041339Bd0D20eE6327dbC554AC";
   const stakeTokenAddress = "0xe278058F6598F712095DA268367f267F9E250D4A";
 
       // Wallet Connect
@@ -141,13 +141,18 @@ console.warn({ err });
           "function balanceOf(address account) public view returns (uint256)"
         ];
 
+        const tAmountBN = ethers.BigNumber.from( tAmount.toString() )
+          .mul(
+            ethers.BigNumber.from( '10' )
+              .pow( ethers.BigNumber.from( '18' ))
+          );
 
         const connectedContract = new ethers.Contract(stakeTokenAddress, abi, signer);
 
         //already BN
-        let _userBalance = await connectedContract.balanceOf(account);
-        const gasLimitBN = await connectedContract.estimateGas.approve(mainScAddress, _userBalance.toString(), { from: account });
-        let _isApproved = await connectedContract.approve(mainScAddress, _userBalance.toString(), { from: account, gasLimit: gasLimitBN.toString() });
+        // let _userBalance = await connectedContract.balanceOf(account);
+        const gasLimitBN = await connectedContract.estimateGas.approve(mainScAddress, tAmountBN.toString(), { from: account });
+        let _isApproved = await connectedContract.approve(mainScAddress, tAmountBN.toString(), { from: account, gasLimit: gasLimitBN.toString() });
         
 
         setIsLoadingApprove(true);
