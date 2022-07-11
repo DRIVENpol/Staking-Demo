@@ -72,14 +72,14 @@ const FarmingAddButton = (props) => {
         const connectedContract = new ethers.Contract(mainScAddress, abi, signer);
 
         //TODO: decimals!
-        tAmount = 5;
+        // tAmount = 5;
         const tAmountBN = ethers.BigNumber.from( tAmount.toString() )
           .mul(
             ethers.BigNumber.from( '10' )
               .pow( ethers.BigNumber.from( '18' ))
           );
 
-console.info({ tAmountBN: tAmountBN.toString() });
+        console.info({ tAmountBN: tAmountBN.toString() });
         const gasLimit = await connectedContract.estimateGas.deposit( tAmountBN.toString(), { from: account });
         let _farming = await connectedContract.deposit( tAmountBN.toString(), { from: account, gasLimit: gasLimit.toString() });
 
@@ -141,13 +141,18 @@ console.warn({ err });
           "function balanceOf(address account) public view returns (uint256)"
         ];
 
+        const tAmountBN = ethers.BigNumber.from( tAmount.toString() )
+          .mul(
+            ethers.BigNumber.from( '10' )
+              .pow( ethers.BigNumber.from( '18' ))
+          );
 
         const connectedContract = new ethers.Contract(stakeTokenAddress, abi, signer);
 
         //already BN
-        let _userBalance = await connectedContract.balanceOf(account);
-        const gasLimitBN = await connectedContract.estimateGas.approve(mainScAddress, _userBalance.toString(), { from: account });
-        let _isApproved = await connectedContract.approve(mainScAddress, _userBalance.toString(), { from: account, gasLimit: gasLimitBN.toString() });
+        // let _userBalance = await connectedContract.balanceOf(account);
+        const gasLimitBN = await connectedContract.estimateGas.approve(mainScAddress, tAmountBN.toString(), { from: account });
+        let _isApproved = await connectedContract.approve(mainScAddress, tAmountBN.toString(), { from: account, gasLimit: gasLimitBN.toString() });
         
 
         setIsLoadingApprove(true);
