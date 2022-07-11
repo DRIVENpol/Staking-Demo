@@ -22,8 +22,8 @@ const FarmingAddButton = (props) => {
   
   const toast = useToast();
 
-  const mainScAddress = "0x5C8aE5127CE5c5E6C1c675ffb2AC816B14FF57e5";
-  const stakeTokenAddress = "0xb52f3450195682F097070c119b90a32398EC7FdF";
+  const mainScAddress = "0xc213aACaFa928bb6A6AE9c5510d3D857136D0d29";
+  const stakeTokenAddress = "0x21a222aa273e4bC3e1665DB6ec7Db098B0EE5866";
 
       // Wallet Connect
       const [provider, setProvider] = useState();
@@ -97,11 +97,6 @@ const FarmingAddButton = (props) => {
           isClosable: true,
         });
 
-        props.allowanceFunction();
-
-
-
-
         console.log(_farming);
         console.log(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${_farming.hash}`);
         //setTransaction(`https://rinkeby.etherscan.io/tx/${_farming.hash}`);
@@ -114,11 +109,46 @@ console.warn({ err });
     }
   };
 
+  // ======= APPROVE  =======
+  const [ercApprove, setErcApprove] = useState(0);
+
+  const allowanceErc20 = async () => {
+    if (typeof window !== 'undefined'){
+      try {
+        
+        const { ethereum } = window;
+        const provider = new ethers.providers.Web3Provider(ethereum);
+
+
+        setProvider(provider);
+        setLibrary(library);
+
+        const abi = [
+        "function allowance(address owner, address spender) public view returns (uint256)",
+        "function decimals() public view returns (uint8)"];
+
+        const connectedContract = new ethers.Contract(stakeTokenAddress, abi, provider);
+
+        let _decimals = await connectedContract.decimals();
+        
+        let _isApproved = await connectedContract.allowance(account, mainScAddress);
+        console.log("Approved: " + _isApproved)
+      
+
+        localStorage.setItem('ercApprove', _isApproved.toString());
+        console.log("Approved2: " + localStorage.getItem('ercApprove'))
+
+      } catch (error) {
+        
+      }
+    }
+  };
+
 
 
 
   useEffect(() => {
-    props.allowanceFunction();
+    // props.allowanceFunction();
     props.ui();
   }, [])
   
@@ -150,15 +180,15 @@ console.warn({ err });
         const connectedContract = new ethers.Contract(stakeTokenAddress, abi, signer);
 
         //already BN
-        // let _userBalance = await connectedContract.balanceOf(account);
-        const gasLimitBN = await connectedContract.estimateGas.approve(mainScAddress, tAmountBN.toString(), { from: account });
-        let _isApproved = await connectedContract.approve(mainScAddress, tAmountBN.toString(), { from: account, gasLimit: gasLimitBN.toString() });
+        let _userBalance = await connectedContract.balanceOf(account);
+        const gasLimitBN = await connectedContract.estimateGas.approve(mainScAddress, _userBalance.toString(), { from: account });
+        let _isApproved = await connectedContract.approve(mainScAddress, _userBalance.toString(), { from: account, gasLimit: gasLimitBN.toString() });
         
 
         setIsLoadingApprove(true);
         await _isApproved.wait();
         setIsLoadingApprove(false);
-        props.allowanceFunction()
+        allowanceErc20();
 
 
         console.log(_isApproved);
@@ -325,7 +355,7 @@ console.warn({ err });
 
 
 console.info({
-  'props.allowance': props.allowance,
+  'allowance': localStorage.getItem('ercApprove'),
   'tAmount': tAmount
 });
 
@@ -368,13 +398,14 @@ console.info({
                 if( evt.target.value && !isNaN( evt.target.value ) ){
                 console.info( `setting ${evt.target.value}` );
                   setTAmount(parseFloat( evt.target.value ));
+                  allowanceErc20();
                 }
               }} />
             </InputGroup>
           </ModalBody>
           <ModalFooter>
 
-         {props.allowance < tAmount ? (
+         {localStorage.getItem('ercApprove') < tAmount.toString() ? (
           <>
           { !isLoadingApprove ? (<>
             <Button

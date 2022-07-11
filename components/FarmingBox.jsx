@@ -11,8 +11,8 @@ import { providerOptions } from "../Utils/providerOptions";
 
 const FarmingBox = (props) => {
 
-  const mainScAddress = "0x5C8aE5127CE5c5E6C1c675ffb2AC816B14FF57e5";
-  const stakeTokenAddress = "0xb52f3450195682F097070c119b90a32398EC7FdF";
+  const mainScAddress = "0xc213aACaFa928bb6A6AE9c5510d3D857136D0d29";
+  const stakeTokenAddress = "0x21a222aa273e4bC3e1665DB6ec7Db098B0EE5866";
 
   const [provider, setProvider] = useState();
   const [library, setLibrary] = useState();
@@ -57,42 +57,6 @@ const FarmingBox = (props) => {
         localStorage.setItem('userBalance', (_userBalance / 10 ** _decimals).toLocaleString());
   };
 
-
-    // ======= APPROVE  =======
-    const [ercApprove, setErcApprove] = useState(0);
-
-    const allowanceErc20 = async () => {
-      if (typeof window !== 'undefined'){
-        try {
-          
-          const { ethereum } = window;
-          const provider = new ethers.providers.Web3Provider(ethereum);
-  
-  
-          setProvider(provider);
-          setLibrary(library);
-  
-          const abi = [
-          "function allowance(address owner, address spender) public view returns (uint256)",
-          "function decimals() public view returns (uint8)"];
-  
-          const connectedContract = new ethers.Contract(stakeTokenAddress, abi, provider);
-  
-          let _decimals = await connectedContract.decimals();
-          
-          let _isApproved = await connectedContract.allowance(account, mainScAddress);
-  
-          let fAmount = _isApproved / 10 ** _decimals;
-  
-          setErcApprove(fAmount);
-          localStorage.setItem('ercApprove', _isApproved.toString());
-
-  
-        } catch (error) {
-          
-        }
-      }
-    };
 
   
   async function connectWallet() {
@@ -341,8 +305,6 @@ useEffect(() => {
                       ub={localStorage.getItem('userBalance')}
                       sbu={localStorage.getItem('stakedByUser')} 
                       ui={userInfo} 
-                      allowanceFunction={allowanceErc20}
-                      allowance={localStorage.getItem('ercApprove')}
                       poolDetails={props.poolDetails}
                       />
                         </HStack>
