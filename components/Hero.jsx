@@ -60,20 +60,9 @@ export default function Hero() {
             alignSelf={'center'}
             position={'relative'}>
             <Link href='/Staking'>
-          <Button
-              variant={'solid'}
-              size='lg'
-              bgGradient='linear(to-l, #7928CA, #FF0080)'
-              color='white'
-              maxW={'100%'}
-              fontSize={['12px', null, null, null, '100%']}
-              _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
-              px={6} borderRadius={40}>
-             <b>Stake $DVX</b>
-            </Button>
             </Link>
 
-            <Link href='/Farming'>
+            <Link href='/Staking'>
             <Button
               variant={'solid'}
               size='lg'
@@ -83,7 +72,7 @@ export default function Hero() {
               fontSize={['12px', null, null, null, '100%']}
               _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
               px={6} borderRadius={40}>
-             <b>Farm $DVX</b>
+             <b>Stake $DVX</b>
             </Button>
             </Link>
             <Box>

@@ -10,9 +10,9 @@ import { ethers } from "ethers";
 import FarmingBox from '../components/FarmingBox';
 import AnalyticsFarming from '../components/AnalyticsFarming';
 
-const Staking = () => {
+const Farming = () => {
 
-  const mainScAddress = "0xBCc8431d326fcF34De49822ABd074Eb7eff3c967";
+  const mainScAddress = "0x45f82E937D45cF131C441F1C4206B8b13686284f";
 
   const tokenPrice = 2.476;
 
@@ -86,7 +86,7 @@ useEffect(() => {
    />
 
       <Center>
-      <FarmingBox />
+      <FarmingBox poolDetails={getPoolDetails} />
       </Center>
 
     </Container>
@@ -94,4 +94,4 @@ useEffect(() => {
   )
 }
 
-export default Staking
+export default Farming
