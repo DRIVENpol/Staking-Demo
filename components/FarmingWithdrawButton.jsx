@@ -357,15 +357,15 @@ useEffect(() => {
                       >
         {overlay}
         <ModalContent bgColor='#0d1836' color={'white'} border='2px' borderColor={'#FF0080'} p='6' borderRadius={20}>
-          <ModalHeader>Farm DVX-BNB LP</ModalHeader>
+          <ModalHeader>Stake DVX</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
           <Box bgColor={'#15234a'} p='2' borderRadius={'10'} mb='1'>
-            <Text><b>DVX-BNB LP in your wallet:</b> {props.ub}</Text>
+            <Text><b>DVX in your wallet:</b> {props.ub}</Text>
             </Box>
 
             <Box bgColor={'#15234a'} p='2' borderRadius={'10'} mb='1'>
-            <Text><b>DVX-BNB LP farmed by you:</b> {props.sbu}</Text>
+            <Text><b>DVX farmed by you:</b> {props.sbu}</Text>
             </Box>
 
             <Box bgColor={'#15234a'} p='2' borderRadius={'10'} mb='1'>
@@ -373,7 +373,7 @@ useEffect(() => {
             </Box>
             <br />
             <InputGroup>
-              <InputLeftAddon bgColor={'#15234a'}>DVX-BNB LP</InputLeftAddon>
+              <InputLeftAddon bgColor={'#15234a'}>DVX</InputLeftAddon>
               <Input type='number' placeholder='Amount To Withdraw'
               onChange={(evt) => {
                 if( evt.target.value && !isNaN( evt.target.value ) ){

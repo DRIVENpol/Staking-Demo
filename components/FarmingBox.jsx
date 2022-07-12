@@ -306,7 +306,7 @@ useEffect(() => {
               
 
                       <GridItem w='100%' mt='5'>
-                      <Text as={'b'} color='white' fontSize={'xl'}>Farm / Withdraw DVX</Text>
+                      <Text as={'b'} color='white' fontSize={'xl'}>Stake / Withdraw DVX</Text>
                       </GridItem>
 
                      <GridItem />
@@ -314,7 +314,7 @@ useEffect(() => {
                      <GridItem w='100%'>
                       <Box p='5' bgColor={'#132144'} borderRadius='12'>
                       <HStack>
-                      <Text color='white'><b>Farm</b></Text>
+                      <Text color='white'><b>Stake</b></Text>
                       <FarmingAddButton 
                       ub={localStorage.getItem('userBalance')}
                       sbu={localStorage.getItem('stakedByUser')} 
