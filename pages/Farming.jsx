@@ -12,7 +12,7 @@ import AnalyticsFarming from '../components/AnalyticsFarming';
 
 const Farming = () => {
 
-  const mainScAddress = "0x9B1BCeDdC90387c59Bb7F22c1070cE6A14E33749";
+  const mainScAddress = "0x45f82E937D45cF131C441F1C4206B8b13686284f";
 
   const tokenPrice = 2.476;
 

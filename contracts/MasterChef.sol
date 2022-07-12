@@ -15,6 +15,7 @@ contract SmartChef is Ownable, ReentrancyGuard {
     // Variables for active stakers
     uint256 public activeStakers;
     mapping (address => bool) public isStaker;
+    mapping (address => uint256) public receivedRewardsByUser;
 
     // Variables for total rewards sent
     uint256 public totalRewards;
@@ -134,6 +135,7 @@ contract SmartChef is Ownable, ReentrancyGuard {
             if (pending > 0) {
                 rewardToken.safeTransfer(address(msg.sender), pending);
                 totalRewards = totalRewards.add(pending);
+                receivedRewardsByUser[msg.sender] = receivedRewardsByUser[msg.sender].add(pending);
             }
         }
 
@@ -167,6 +169,7 @@ contract SmartChef is Ownable, ReentrancyGuard {
         if (pending > 0) {
             rewardToken.safeTransfer(address(msg.sender), pending);
             totalRewards = totalRewards.add(pending);
+            receivedRewardsByUser[msg.sender] = receivedRewardsByUser[msg.sender].add(pending);
         }
 
         user.rewardDebt = user.amount.mul(accTokenPerShare).div(PRECISION_FACTOR);
@@ -359,5 +362,10 @@ contract SmartChef is Ownable, ReentrancyGuard {
 
     function getTotalRedistributedRewards() external view returns(uint256) {
         return totalRewards;
+    }
+
+    function getRewardsReceivedByUser(address _who) external view returns(uint256) {
+        uint256 _uR = receivedRewardsByUser[_who];
+        return _uR;
     }
 }

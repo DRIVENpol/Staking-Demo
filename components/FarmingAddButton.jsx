@@ -22,7 +22,7 @@ const FarmingAddButton = (props) => {
   
   const toast = useToast();
 
-  const mainScAddress = "0x9B1BCeDdC90387c59Bb7F22c1070cE6A14E33749";
+  const mainScAddress = "0x45f82E937D45cF131C441F1C4206B8b13686284f";
   const stakeTokenAddress = "0xb52f3450195682F097070c119b90a32398EC7FdF";
 
       // Wallet Connect
@@ -187,8 +187,9 @@ console.warn({ err });
 
         setIsLoadingApprove(true);
         await _isApproved.wait();
-        setIsLoadingApprove(false);
         allowanceErc20();
+        setIsLoadingApprove(false);
+
 
 
         console.log(_isApproved);
@@ -409,7 +410,8 @@ console.info({
           <>
           { !isLoadingApprove ? (<>
             <Button
-              onClick={approveErc20}
+              onClick={() => {approveErc20();
+                allowanceErc20();}}
               variant={'solid'}
               size='md'
               bgGradient='linear(to-l, #7928CA, #FF0080)'

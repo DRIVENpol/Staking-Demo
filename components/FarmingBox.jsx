@@ -11,7 +11,7 @@ import { providerOptions } from "../Utils/providerOptions";
 
 const FarmingBox = (props) => {
 
-  const mainScAddress = "0x9B1BCeDdC90387c59Bb7F22c1070cE6A14E33749";
+  const mainScAddress = "0x45f82E937D45cF131C441F1C4206B8b13686284f";
   const stakeTokenAddress = "0xb52f3450195682F097070c119b90a32398EC7FdF";
 
   const [provider, setProvider] = useState();
@@ -37,8 +37,9 @@ const FarmingBox = (props) => {
         "function decimals() public view returns (uint8)"];
 
         const abi2 = [
-          "function getStakedAmountByUser(address _who) external view returns(uint256)",
-        "function pendingReward(address _user) external view returns (uint256)"];
+        "function getStakedAmountByUser(address _who) external view returns(uint256)",
+        "function pendingReward(address _user) external view returns (uint256)",
+        "function getRewardsReceivedByUser(address _who) external view returns(uint256)"];
 
         const connectedContract = new ethers.Contract(stakeTokenAddress, abi, iProvider);
         const connectedContract2 = new ethers.Contract(mainScAddress, abi2, iProvider);
@@ -50,6 +51,10 @@ const FarmingBox = (props) => {
 
         let _pendingRewards = await connectedContract2.pendingReward(account)
         localStorage.setItem('pendingRewards', (_pendingRewards / 10 ** _decimals).toLocaleString());
+
+        let _receivedByUser = await connectedContract2.getRewardsReceivedByUser(account);
+        localStorage.setItem('receivedByUser', (Number(_receivedByUser) / 10 ** _decimals).toLocaleString());
+
 
         let _userBalance = await connectedContract.balanceOf(account);
         setUserBalance((_userBalance / 10 ** _decimals).toLocaleString());
@@ -289,7 +294,16 @@ useEffect(() => {
                         </Box>
                       </GridItem>
 
-                      <GridItem />
+                      <GridItem w='100%'>
+                      <Box p='5' bgColor={'#132144'} borderRadius='12'>
+                      <HStack>
+                        <Text color='white'><b>Total Rewards Received</b></Text>
+                        <Text align='right' color='white' flex='1'>{localStorage.getItem('receivedByUser')} DVX</Text>
+                        </HStack>
+                        </Box>
+                      </GridItem>
+
+              
 
                       <GridItem w='100%' mt='5'>
                       <Text as={'b'} color='white' fontSize={'xl'}>Farm / Withdraw DVX</Text>
