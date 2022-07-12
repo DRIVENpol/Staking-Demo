@@ -109,6 +109,17 @@ console.warn({ err });
     }
   };
 
+const MINUTE_MS = 6000;
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    props.ui();
+    props.poolDetails();
+  }, MINUTE_MS);
+
+  return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+}, [])
+
   // ======= APPROVE  =======
   const [ercApprove, setErcApprove] = useState(0);
 
