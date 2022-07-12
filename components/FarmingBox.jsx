@@ -329,7 +329,13 @@ useEffect(() => {
                       <Box p='5' bgColor={'#132144'} borderRadius='12'>
                       <HStack>
                       <Text color='white'><b>Withdraw</b></Text>
-                      <FarmingWithdrawButton />
+                      <FarmingWithdrawButton 
+                      ub={localStorage.getItem('userBalance')}
+                      sbu={localStorage.getItem('stakedByUser')}
+                      pr = {localStorage.getItem('pendingRewards')}
+                      ui={userInfo} 
+                      poolDetails={props.poolDetails}
+                      />
                         </HStack>
                         </Box>
                       </GridItem>
