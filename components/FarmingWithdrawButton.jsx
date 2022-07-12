@@ -387,7 +387,9 @@ useEffect(() => {
 
           <Grid templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(2, 1fr)', 'repeat(2, 1fr)', ]} gap={1} align='right'>
               <GridItem w='100%' >
-              <Button
+              {unfarmLoading === false ? (
+                <>
+                <Button
               onClick={unFarming}
               variant={'solid'}
               size='md'
@@ -397,12 +399,27 @@ useEffect(() => {
                borderRadius={20} mb={['2', '2', null, null, null]}>
              Withdraw Tokens
             </Button>
+                </>
+              ) : (<>
+                <Button
+              isLoading
+              loadingText='Withdrawing...'
+              variant={'solid'}
+              size='md'
+              bgGradient='linear(to-l, #7928CA, #FF0080)'
+              color='white'
+              _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
+               borderRadius={20} mb={['2', '2', null, null, null]}
+               />
+              </>)}
+             
 
               </GridItem>
 
 
               <GridItem w='100%'>
-              <Button
+              {wrLoading === false ? (<>
+                <Button
               onClick={withdrawRewards}
               variant={'solid'}
               size='md'
@@ -412,6 +429,19 @@ useEffect(() => {
                borderRadius={20}>
              Withdraw Rewards
             </Button>
+              </>) : (<>
+                <Button
+              isLoading
+              loadingText='Withdrawing...'
+              variant={'solid'}
+              size='md'
+              bgGradient='linear(to-l, #7928CA, #FF0080)'
+              color='white'
+              _hover={{bgGradient: "linear(to-l, #8a32e3, #FF0080)", color: "white"}}
+               borderRadius={20} mb={['2', '2', null, null, null]}
+               />
+              </>)}
+             
               </GridItem>
           </Grid>
 

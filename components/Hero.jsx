@@ -1,13 +1,11 @@
-import Head from 'next/head';
+
 import {
   Box,
   Heading,
-  Container,
   Text,
   Button,
   Stack,
-  createIcon,
-  Flex, Image, Center
+  createIcon
 } from '@chakra-ui/react';
 
 import { useRouter } from 'next/router'
