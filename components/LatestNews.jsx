@@ -2,6 +2,8 @@ import React from 'react'
 import { Image, Text, Box, Center, VStack, Button,
 Grid, GridItem, Link } from '@chakra-ui/react';
 
+import DemoNews from '../assets/demo-news.png';
+
 const LatestNews = () => {
   const articles = [{
     "title": "Article Title 1",
@@ -34,8 +36,9 @@ const LatestNews = () => {
                     borderColor={'#FF0080'}
                     boxShadow='#FF0080 0px 2px 15px'
                     mb={2}
-                    bgImage={'https://lh3.googleusercontent.com/G5V8Tny1jONBKHZfsAEiOVUYaKMUMgQuo-VwfHBa8_AAgsmAuWdz7lPq6UUmK5dCfilaaNBIOe5l1UoqiHAOyDoD5lAKZpxZtmtOZQ=h600'}
+                    bgImage={DemoNews.src}
                     bgPosition='center'
+                    bgSize={'cover'}
                     >
                      <Box bg='#FF0080' w='100%' h='55px' borderTopRadius={17} p={4} color='white' >
                         <Text as={'b'} noOfLines='1' fontSize={['14px', null, null, null, '15px']}> [BREAKING NEWS]: Breaking News Title</Text>
